@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Projeto Vértice — Diagnóstico, Evidências e Business Case</title>
+    <title>Projeto Vértice: Diagnóstico, Evidências e Business Case</title>
     <style>
   :root {
     --ink: #131920;
@@ -343,13 +343,201 @@
     transition: border-color .18s ease;
   }
   .dashboard-embed:hover { border-color: var(--primary-light); }
+
+  /* ---------- MODULE CARDS (Soluções B/C/D) ---------- */
+  .module-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 22px 24px;
+    margin-bottom: 18px;
+    transition: box-shadow .18s ease, border-color .18s ease;
+  }
+  .module-card:hover { box-shadow: var(--shadow-md); border-color: var(--primary-light); }
+  .module-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+  .module-badge {
+    background: var(--primary);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 999px;
+    letter-spacing: .3px;
+  }
+  .module-title { font-family: var(--font-display); font-weight: 700; font-size: 16px; color: var(--ink); }
+  .module-flow {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    background: var(--bg-base);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+  .io-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 720px) { .io-grid { grid-template-columns: 1fr; } }
+  .io-block { border-radius: 8px; padding: 12px 14px; }
+  .io-in { background: #f9fafb; border: 1px solid var(--border); }
+  .io-out { background: var(--primary-bg); border: 1px solid var(--primary-light); }
+  .io-label { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; color: var(--muted); margin-bottom: 6px; }
+  .io-code {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink);
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+    background: none;
+    padding: 0;
+  }
+  .module-validation {
+    margin-top: 14px;
+    font-size: 12.5px;
+    color: var(--success);
+    background: var(--success-bg);
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+  .flow-screenshot-wrap { margin: 14px 0; }
+  .flow-screenshot {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    display: block;
+  }
+  .flow-caption { font-size: 11.5px; color: var(--muted-light); margin-top: 6px; text-align: center; }
+  .result-label { font-size: 12.5px; font-weight: 700; color: var(--primary-dark); margin: 16px 0 8px; }
+  .email-preview {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--bg-base);
+  }
+  .email-preview-chrome {
+    background: #eeecef;
+    border-bottom: 1px solid var(--border);
+    padding: 8px 14px;
+    font-size: 11px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+  }
+  .email-preview-body { padding: 16px; max-height: 640px; overflow-y: auto; }
+
+  /* ---------- ROADMAP ---------- */
+  .roadmap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 820px) { .roadmap-grid { grid-template-columns: 1fr; } }
+  .roadmap-phase {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 18px 20px;
+    transition: box-shadow .18s ease;
+  }
+  .roadmap-phase:hover { box-shadow: var(--shadow-md); }
+  .phase-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--primary-dark);
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .phase-days { font-family: var(--font-body); font-size: 11px; font-weight: 600; color: var(--muted); }
+  .phase-item { font-size: 12.5px; color: var(--ink); margin-bottom: 10px; line-height: 1.5; }
+  .phase-item .badge { margin-right: 6px; }
+
+  /* ---------- RISK CARDS (Governança) ---------- */
+  .risk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+  .risk-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--warning);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 18px 20px;
+    transition: box-shadow .18s ease, transform .18s ease;
+  }
+  .risk-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .risk-title { font-family: var(--font-display); font-weight: 700; font-size: 14.5px; color: var(--ink); margin-bottom: 10px; }
+  .risk-text { font-size: 12.5px; color: var(--muted); line-height: 1.6; margin: 0 0 8px; }
+
+  /* ---------- LESSON CARDS ---------- */
+  .lesson-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+  .lesson-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary-light);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    box-shadow: var(--shadow-sm);
+    padding: 16px 20px;
+    transition: box-shadow .18s ease, transform .18s ease;
+  }
+  .lesson-card:hover { box-shadow: var(--shadow-md); transform: translateX(3px); }
+  .lesson-title { font-family: var(--font-display); font-weight: 700; font-size: 13.5px; color: var(--primary-dark); margin-bottom: 8px; }
+  .lesson-text { font-size: 12.5px; color: var(--muted); line-height: 1.65; margin: 0; }
+  .lesson-text code { font-size: 11px; }
+
+  /* ---------- TEAM (Participantes) ---------- */
+  .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .team-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 22px 20px;
+    text-align: center;
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .team-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .team-avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    margin: 0 auto 14px;
+  }
+  .team-photo {
+    width: 84px; height: 84px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 14px;
+    border: 3px solid var(--primary-bg);
+  }
+  .team-name { font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--ink); margin-bottom: 4px; }
+  .team-role { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+  .team-contact { display: flex; flex-direction: column; gap: 4px; font-size: 12px; }
+  .team-contact a { color: var(--primary); text-decoration: none; }
+  .team-contact a:hover { text-decoration: underline; }
+
+  /* ---------- PERSONAL LESSON CARDS (placeholder) ---------- */
+  .lesson-personal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+  .lesson-personal-card {
+    background: var(--paper);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+  }
+  .lesson-personal-name { font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--ink); }
+  .lesson-personal-role { font-size: 11.5px; color: var(--muted-light); margin-bottom: 10px; }
+  .lesson-personal-text { font-size: 12.5px; color: var(--muted); font-style: italic; margin: 0; }
 </style>
   </head>
   <body>
 
     <div class="hero">
       <div class="hero-inner">
-        <div class="eyebrow">Estudo de caso · Consultoria de Dados & IA</div>
+        <div class="eyebrow">Vértice Retail · Consultoria de Dados & IA</div>
         <h1>Diagnóstico, evidências e plano de recuperação de margem para a
           Vértice Retail</h1>
         <p class="lede">Consultoria de dados e IA para responder à diretoria:
@@ -359,7 +547,7 @@
               class="lbl">Impacto anual defensável</div></div>
           <div class="stat-pill"><div class="num">R$8,65 Mi</div><div
               class="lbl">Capital liberável em estoque</div></div>
-          <div class="stat-pill"><div class="num">14</div><div
+          <div class="stat-pill"><div class="num">15</div><div
               class="lbl">Hipóteses testadas</div></div>
           <div class="stat-pill"><div class="num">7,5x</div><div
               class="lbl">ChatBot mais barato que canais humanos</div></div>
@@ -368,6 +556,7 @@
     </div>
 
     <nav class="toc">
+      <a href="#participantes">Participantes</a>
       <a href="#entregaveis">Entregáveis</a>
       <a href="#diagnostico">Diagnóstico</a>
       <a href="#hipoteses">Hipóteses</a>
@@ -375,16 +564,66 @@
       <a href="#evidencias">Evidências</a>
       <a href="#oportunidades">Oportunidades</a>
       <a href="#solucoes">Soluções (IA)</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#governanca">Governança</a>
       <a href="#business-case">Business Case</a>
       <a href="#dashboard">Dashboard</a>
+      <a href="#licoes">Lições</a>
     </nav>
 
     <div class="container">
 
+      <section id="participantes">
+        <h2>👥 Participantes</h2>
+        <p style="color:var(--muted); font-size:13.5px; margin-top:-8px;">Squad
+          responsável pelo case.</p>
+
+        <div class="team-grid">
+          <div class="team-card">
+            <img src="images/autores/edilberto.jpg" alt="Edilberto Cantuária"
+              class="team-photo">
+            <div class="team-name">Edilberto Cantuária</div>
+            <div class="team-role">Diagnóstico, Dados, Dashboard &amp; Protótipo
+              de IA</div>
+            <div class="team-contact">
+              <a href="https://wa.me/5561982723215" target="_blank"
+                rel="noopener">WhatsApp ↗</a>
+              <a href="https://www.linkedin.com/in/edilberto-cantuaria/"
+                target="_blank" rel="noopener">LinkedIn ↗</a>
+              <a href="https://github.com/edilbertocantuaria" target="_blank"
+                rel="noopener">GitHub ↗</a>
+            </div>
+          </div>
+          <div class="team-card">
+            <img src="images/autores/yuri.jpeg" alt="Yuri Espíndola"
+              class="team-photo">
+            <div class="team-name">Yuri Espíndola</div>
+            <div class="team-role">Integrante do time</div>
+            <div class="team-contact">
+              <a href="https://wa.me/5531996396702" target="_blank"
+                rel="noopener">WhatsApp ↗</a>
+              <a href="https://www.linkedin.com/in/yuri-esp%C3%ADndola/"
+                target="_blank" rel="noopener">LinkedIn ↗</a>
+            </div>
+          </div>
+          <div class="team-card">
+            <img src="images/autores/alice.jpg" alt="Alice Fernandes Lima"
+              class="team-photo">
+            <div class="team-name">Alice Fernandes Lima</div>
+            <div class="team-role">Integrante do time</div>
+            <div class="team-contact">
+              <a
+                href="https://www.linkedin.com/in/alice-fernandes-lima-8402a92b6/"
+                target="_blank" rel="noopener">LinkedIn ↗</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="entregaveis">
         <h2><span class="num-marker">0</span>Entregáveis do case</h2>
         <p style="color:var(--muted); font-size:14px; margin-top:-10px;">Raio-x
-          de onde a squad está em relação aos 8 entregáveis oficiais do case —
+          de onde a squad está em relação aos entregáveis oficiais do case,
           marcado mesmo o que ainda não foi iniciado, pra rastrear o que
           falta.</p>
         <div class="deliv-grid">
@@ -407,8 +646,8 @@
             <p>Painel com indicadores-chave para a diretoria acompanhar margem,
               canais, clientes, operação e atendimento.</p>
           </div>
-          <div class="deliverable-card status-pending">
-            <div class="deliverable-status">Pendente</div>
+          <div class="deliverable-card status-done">
+            <div class="deliverable-status">Concluído</div>
             <h3>Protótipo ou demonstração de IA</h3>
             <p>Analisador de funil, classificador, automação, gerador de
               relatório ou priorizador demonstrável.</p>
@@ -419,23 +658,17 @@
             <p>Estimativa de impacto financeiro e operacional: receita
               protegida, margem recuperada, economia, esforço e payback.</p>
           </div>
-          <div class="deliverable-card status-pending">
-            <div class="deliverable-status">Pendente</div>
+          <div class="deliverable-card status-done">
+            <div class="deliverable-status">Concluído</div>
             <h3>Roadmap 30-60-90 dias</h3>
             <p>Plano de implementação com quick wins, iniciativas estruturais,
               responsáveis, dependências e KPIs.</p>
           </div>
-          <div class="deliverable-card status-partial">
-            <div class="deliverable-status">Parcial</div>
+          <div class="deliverable-card status-done">
+            <div class="deliverable-status">Concluído</div>
             <h3>Governança e riscos</h3>
             <p>Riscos de dados, privacidade, vieses, alucinação, adoção pelo
               time e controles necessários.</p>
-          </div>
-          <div class="deliverable-card status-pending">
-            <div class="deliverable-status">Pendente</div>
-            <h3>Apresentação Final</h3>
-            <p>Apresentação para a diretoria com diagnóstico, recomendações,
-              demonstração e plano de ação.</p>
           </div>
         </div>
       </section>
@@ -444,7 +677,7 @@
         <h2><span class="num-marker">1</span>Diagnóstico do negócio</h2>
         <div class="card">
           <p>A margem de contribuição agregada é <strong>54,4%</strong> e está
-            <strong>estável</strong> ao longo do período coberto pelos dados —
+            <strong>estável</strong> ao longo do período coberto pelos dados:
             não há erosão generalizada de margem. Isso muda o enquadramento do
             problema: <strong>a queda de rentabilidade não é um problema de
               margem média, é um problema de alocação</strong>. A empresa
@@ -478,7 +711,7 @@
           <div class="hyp-title">H1b · A margem se deteriora por categoria/mix
             de produto <span class="badge refutada">Refutada</span></div>
           Margem por categoria no mesmo patamar: Moda 54,5% · Acessórios 54,5% ·
-          Beleza 54,4% · Lifestyle 54,1% — variação de apenas 0,4 p.p.
+          Beleza 54,4% · Lifestyle 54,1%, variação de apenas 0,4 p.p.
         </div>
         <div class="hyp confirmada">
           <div class="hyp-title">H2 · Nem todo canal de aquisição gera
@@ -486,7 +719,7 @@
               class="badge confirmada">Confirmada</span></div>
           Marketplace tem a pior margem (51,4%) E o pior ROAS (~3,0x)
           simultaneamente. Influenciador tem o melhor ROAS (7,6-7,7x) e margem
-          acima da média — contraria a hipótese-exemplo do case.
+          acima da média, o que contraria a hipótese-exemplo do case.
         </div>
         <div class="hyp parcial">
           <div class="hyp-title">H3 · Falhas operacionais destroem valor
@@ -505,14 +738,15 @@
         <div class="hyp confirmada">
           <div class="hyp-title">H5 · Segmentos de clientes têm valor muito
             diferente <span class="badge confirmada">Confirmada</span></div>
-          LTV médio varia de R$2.666 (Hibernando) a R$26.671 (Campeão) — 10x de
+          LTV médio varia de R$2.666 (Hibernando) a R$26.671 (Campeão), 10x de
           diferença. "Promissor" (cliente novo) gera 2x mais tickets de suporte
           que "Fiel".
         </div>
         <div class="hyp parcial"><div class="hyp-title">H6 · Ineficiência de
             informação/gargalos de decisão <span class="badge parcial">A
               investigar</span></div>Não há dado direto sobre horas/processos
-          manuais no Data Room — fica como hipótese qualitativa a validar com a
+          manuais no Data Room, então fica como hipótese qualitativa a validar
+          com a
           diretoria.</div>
         <div class="hyp refutada"><div class="hyp-title">H7 · Atraso na entrega
             explica a devolução <span
@@ -522,7 +756,7 @@
         <div class="hyp refutada"><div class="hyp-title">H8 · Responder mais
             rápido aumenta a satisfação <span
               class="badge refutada">Refutada</span></div>Correlação entre tempo
-          de primeira resposta e CSAT é de apenas 0,015 — praticamente
+          de primeira resposta e CSAT é de apenas 0,015, praticamente
           zero.</div>
         <div class="hyp refutada"><div class="hyp-title">H9 · Método de
             pagamento afeta aprovação/cancelamento <span
@@ -561,7 +795,7 @@
           O case declara a marca como "voltada para jovens adultos". Testamos:
           idade média do cliente é praticamente idêntica em todos os canais
           (31,1 a 31,3 anos). Toda a base já é jovem-adulta (17-39 anos, média
-          27,5) de forma uniforme — não é um diferenciador que explique o ROAS
+          27,5) de forma uniforme e não é um diferenciador que explique o ROAS
           superior do Influenciador. A causa está provavelmente em
           formato/criativo de mídia, não em quem compra.
         </div>
@@ -569,11 +803,11 @@
         <div class="callout warning" style="margin: 4px 0 18px;">
           <strong>Achado colateral (qualidade de dado):</strong> ao testar H15,
           descobrimos que só 346 dos 15.000 clientes de Clientes aparecem em
-          Vendas (2,3%) — com um único cliente concentrando 11.282 pedidos, um
+          Vendas (2,3%), com um único cliente concentrando 11.282 pedidos, um
           artefato de geração sintética. <code>total_pedidos_historico</code>
           não tem correlação (r=-0,003) com a contagem real de pedidos. Métricas
           que cruzam comportamento individual de pedido com o perfil de Clientes
-          não são confiáveis — mesmo tipo de problema de escala já visto entre
+          não são confiáveis, o mesmo tipo de problema de escala já visto entre
           Marketing e Vendas.
         </div>
 
@@ -607,16 +841,17 @@
               2,01</td><td>Revisar onboarding (30-60 dias)</td></tr>
           <tr><td>8</td><td>Margem por categoria é
               estável</td><td>Moda/Acessórios/Beleza/Lifestyle variam só 0,4
-              p.p. entre si</td><td>Hipótese refutada — foco deve ser canal, não
+              p.p. entre si</td><td>Hipótese refutada: o foco deve ser canal,
+              não
               categoria</td></tr>
         </table>
       </section>
 
       <section id="evidencias">
-        <h2><span class="num-marker">4</span>Evidências — a conta por trás dos
+        <h2><span class="num-marker">4</span>Evidências: a conta por trás dos
           números</h2>
         <p style="color:var(--muted); font-size:14px; margin-top:-10px;">Cada
-          gráfico é gerado direto das colunas brutas do Data Room — a fonte e o
+          gráfico é gerado direto das colunas brutas do Data Room, a fonte e o
           cálculo estão descritos abaixo de cada um.</p>
 
         <div class="chart-block">
@@ -852,7 +1087,7 @@
           agrupada por <code>segmento_rfm</code>.</p>
 
         <div class="chart-block">
-          <div class="chart-title">Custo total atual — categorias candidatas à
+          <div class="chart-title">Custo total atual por categoria candidata à
             automação (R$)</div>
           <svg viewBox="0 0 760 260" width="100%" height="auto"
             xmlns="http://www.w3.org/2000/svg">
@@ -961,7 +1196,7 @@
         <p
           style="font-size:12.5px; color:var(--muted-light); margin-top:-10px;">Fonte:
           idade calculada a partir de <code>data_nascimento</code> (Clientes),
-          unida a cada pedido de Vendas por <code>customer_id</code> — testado
+          unida a cada pedido de Vendas por <code>customer_id</code>, testado
           para a hipótese H15 (refutada).</p>
       </section>
 
@@ -1002,12 +1237,12 @@
       <section id="detalhamento-rag">
         <h3
           style="font-family: var(--font-display); font-weight: 700; font-size:17px; color:var(--primary-dark); margin-top:0;">5.1
-          Detalhamento do cálculo — automação via ChatBot/RAG</h3>
+          Detalhamento do cálculo de automação via ChatBot/RAG</h3>
         <div class="card">
-          <p>As 4 categorias de maior volume —
+          <p>As 4 categorias de maior volume:
             <strong>"Onde está meu pedido?"</strong>,
             <strong>"Defeito"</strong>, <strong>"Troca de Tamanho"</strong> e
-            <strong>"Dúvida Técnica"</strong> — são candidatas naturais a um
+            <strong>"Dúvida Técnica"</strong>, são candidatas naturais a um
             agente com RAG.</p>
           <table>
             <tr><th>Categoria</th><th>Tickets</th><th>Custo total
@@ -1039,33 +1274,864 @@
         <table>
           <tr><th>Módulo</th><th>O que resolve</th><th>Impacto
               quantificado</th><th>Esforço</th></tr>
-          <tr><td><strong>A — Funil e Eficiência de
+          <tr><td><strong>A · Funil e Eficiência de
                 Canais</strong></td><td>Compara CAC/ROAS/margem entre
               canais</td><td>Direcional: ROAS 2,91x → 7,63x no valor
               realocado</td><td>Baixo</td></tr>
-          <tr><td><strong>B — Classificador de atendimento
+          <tr><td><strong>B · Classificador de atendimento
                 (RAG)</strong></td><td>Responde rastreio/troca/defeito/dúvida
               técnica</td><td><strong>R$251-358
                 mil/ano</strong></td><td>Médio</td></tr>
-          <tr><td><strong>C — Motor de priorização de
+          <tr><td><strong>C · Motor de priorização de
                 margem</strong></td><td>Ranqueia oportunidades por impacto ×
               esforço</td><td>Organiza R$2,6-4,7 Mi/ano + R$8,65 Mi de
               capital</td><td>Baixo</td></tr>
-          <tr><td><strong>D — Gerador de relatório semanal</strong></td><td>Memo
+          <tr><td><strong>D · Gerador de relatório semanal</strong></td><td>Memo
               executivo via LLM</td><td>Ganho de produtividade (não quantificado
               em R$)</td><td>Baixo-Médio</td></tr>
         </table>
         <div class="callout">
-          <strong>Recomendação:</strong> Módulo B tem o número mais sólido —
-          calculado com dado real, sem cruzar bases de escala incompatível — e
+          <strong>Recomendação:</strong> Módulo B tem o número mais sólido,
+          calculado com dado real, sem cruzar bases de escala incompatível, e
           resolve a dor mais visível do diagnóstico. Módulo C pode ser
           construído em paralelo, como camada fina sobre os números já
           produzidos.
         </div>
+
+        <h3
+          style="font-family: var(--font-display); font-weight:700; font-size:17px; color:var(--primary-dark); margin:32px 0 16px;">B,
+          C e D construídos e validados: entrada, processamento e saída
+          reais</h3>
+        <p style="color:var(--muted); font-size:13.5px; margin-top:-8px;">Os 3
+          módulos rodam de ponta a ponta no n8n. Abaixo, o desenho de cada fluxo
+          e um exemplo real de execução, não uma simulação do que "seria".</p>
+
+        <!-- MÓDULO B -->
+        <!-- MÓDULO C -->
+        <div class="module-card">
+          <div class="module-header">
+            <span class="module-badge">Módulo C</span>
+            <span class="module-title">Motor de Priorização de Margem</span>
+          </div>
+          <!-- <div class="module-flow">Manual/Schedule Trigger → Google Sheets (oportunidades) → Code (calcula score por impacto/facilidade/velocidade) → Sort → Code (empacota lista) → Gemini (justificativa por item) → Code (monta HTML) → Gmail</div> -->
+
+          <div class="flow-screenshot-wrap">
+            <img src="images/modulo_c_fluxo.png"
+              alt="Fluxo real do Módulo C no n8n" class="flow-screenshot">
+            <div class="flow-caption">Fluxo real rodado no n8n, com 7 nós do
+              disparo manual ao envio do e-mail</div>
+          </div>
+
+          <!-- <div class="io-grid">
+            <div class="io-block io-in">
+              <div class="io-label">Entrada (1 linha da tabela oportunidades)</div>
+              <code class="io-code">{"id":"OP-01","nome":"Automatizar triagem via ChatBot/RAG","impacto_medio_reais":304500,"esforco_nivel":3,"janela_dias":75}</code>
+            </div>
+            <div class="io-block io-out">
+              <div class="io-label">Saída (pontuação calculada)</div>
+              <code class="io-code">{"impacto_tier":3,"facilidade_tier":3,"velocidade_tier":3,"score":60}</code>
+            </div>
+          </div> -->
+
+          <div class="result-label">📧 Resultado: disparo do e-mail abaixo</div>
+          <div class="email-preview">
+            <div class="email-preview-chrome">Assunto: 🎯 Oportunidades
+              Priorizadas · Vértice Retail</div>
+            <div class="email-preview-body">
+              <table role="presentation" width="100%" cellpadding="0"
+                cellspacing="0"
+                style="background-color:#ffffff; border:1px solid #eeecff; border-radius:8px; margin-bottom:12px;">
+                <tr>
+                  <td style="padding:16px 20px;">
+                    <table role="presentation" width="100%" cellpadding="0"
+                      cellspacing="0">
+                      <tr>
+                        <td
+                          style="font-size:14px; font-weight:700; color:#131920;">1.
+                          Realocação de investimento de marketing</td>
+                        <td align="right"><span
+                            style="font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; background-color:#e6f5eb; color:#00802f;">Quick
+                            Win</span></td>
+                      </tr>
+                    </table>
+                    <table role="presentation" width="100%" cellpadding="0"
+                      cellspacing="0" style="margin:10px 0 8px;">
+                      <tr>
+                        <td
+                          style="background-color:#f3f0ff; border-radius:6px; height:8px;">
+                          <table role="presentation" cellpadding="0"
+                            cellspacing="0" style="height:8px;"><tr><td
+                                style="background-color:#4200db; width:180px; height:8px; border-radius:6px;"></td></tr></table>
+                        </td>
+                      </tr>
+                    </table>
+                    <div
+                      style="font-size:12.5px; color:#656871; margin-bottom:6px;">Score:
+                      <strong style="color:#2a0090;">90</strong> · Impacto:
+                      Direcional (sem R$ direto) · Janela: 30 dias</div>
+                    <div style="font-size:13px; color:#374151;">Score alto
+                      impulsionado pelo baixíssimo nível de esforço e rapidez de
+                      execução em apenas 30 dias.</div>
+                  </td>
+                </tr>
+              </table>
+              <table role="presentation" width="100%" cellpadding="0"
+                cellspacing="0"
+                style="background-color:#ffffff; border:1px solid #eeecff; border-radius:8px; margin-bottom:12px;">
+                <tr>
+                  <td style="padding:16px 20px;">
+                    <table role="presentation" width="100%" cellpadding="0"
+                      cellspacing="0">
+                      <tr>
+                        <td
+                          style="font-size:14px; font-weight:700; color:#131920;">2.
+                          Retenção segmento Em Risco</td>
+                        <td align="right"><span
+                            style="font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; background-color:#eeecff; color:#2a0090;">Estruturante</span></td>
+                      </tr>
+                    </table>
+                    <table role="presentation" width="100%" cellpadding="0"
+                      cellspacing="0" style="margin:10px 0 8px;">
+                      <tr>
+                        <td
+                          style="background-color:#f3f0ff; border-radius:6px; height:8px;">
+                          <table role="presentation" cellpadding="0"
+                            cellspacing="0" style="height:8px;"><tr><td
+                                style="background-color:#4200db; width:160px; height:8px; border-radius:6px;"></td></tr></table>
+                        </td>
+                      </tr>
+                    </table>
+                    <div
+                      style="font-size:12.5px; color:#656871; margin-bottom:6px;">Score:
+                      <strong style="color:#2a0090;">80</strong> · Impacto: R$
+                      2.210.000 · Janela: 75 dias</div>
+                    <div style="font-size:13px; color:#374151;">Score elevado
+                      devido ao altíssimo impacto financeiro estimado em R$ 2,21
+                      milhões, superando o esforço moderado.</div>
+                  </td>
+                </tr>
+              </table>
+              <table role="presentation" width="100%" cellpadding="0"
+                cellspacing="0"
+                style="background-color:#ffffff; border:1px solid #eeecff; border-radius:8px; margin-bottom:12px;">
+                <tr>
+                  <td style="padding:16px 20px;">
+                    <table role="presentation" width="100%" cellpadding="0"
+                      cellspacing="0">
+                      <tr>
+                        <td
+                          style="font-size:14px; font-weight:700; color:#131920;">3.
+                          Correção de margem do Marketplace</td>
+                        <td align="right"><span
+                            style="font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; background-color:#e6f5eb; color:#00802f;">Quick
+                            Win</span></td>
+                      </tr>
+                    </table>
+                    <table role="presentation" width="100%" cellpadding="0"
+                      cellspacing="0" style="margin:10px 0 8px;">
+                      <tr>
+                        <td
+                          style="background-color:#f3f0ff; border-radius:6px; height:8px;">
+                          <table role="presentation" cellpadding="0"
+                            cellspacing="0" style="height:8px;"><tr><td
+                                style="background-color:#4200db; width:140px; height:8px; border-radius:6px;"></td></tr></table>
+                        </td>
+                      </tr>
+                    </table>
+                    <div
+                      style="font-size:12.5px; color:#656871; margin-bottom:6px;">Score:
+                      <strong style="color:#2a0090;">70</strong> · Impacto: R$
+                      117.500 · Janela: 30 dias</div>
+                    <div style="font-size:13px; color:#374151;">Score favorecido
+                      pelo baixo esforço (nível 1) e rápido retorno em 30 dias,
+                      gerando bom impacto.</div>
+                  </td>
+                </tr>
+              </table>
+              <table role="presentation" width="100%" cellpadding="0"
+                cellspacing="0"
+                style="background-color:#ffffff; border:1px solid #eeecff; border-radius:8px; margin-bottom:12px;">
+                <tr>
+                  <td style="padding:16px 20px;">
+                    <table role="presentation" width="100%" cellpadding="0"
+                      cellspacing="0">
+                      <tr>
+                        <td
+                          style="font-size:14px; font-weight:700; color:#131920;">4.
+                          Revisar onboarding (segmento Promissor)</td>
+                        <td align="right"><span
+                            style="font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; background-color:#eeecff; color:#2a0090;">Estruturante</span></td>
+                      </tr>
+                    </table>
+                    <table role="presentation" width="100%" cellpadding="0"
+                      cellspacing="0" style="margin:10px 0 8px;">
+                      <tr>
+                        <td
+                          style="background-color:#f3f0ff; border-radius:6px; height:8px;">
+                          <table role="presentation" cellpadding="0"
+                            cellspacing="0" style="height:8px;"><tr><td
+                                style="background-color:#4200db; width:128px; height:8px; border-radius:6px;"></td></tr></table>
+                        </td>
+                      </tr>
+                    </table>
+                    <div
+                      style="font-size:12.5px; color:#656871; margin-bottom:6px;">Score:
+                      <strong style="color:#2a0090;">64</strong> · Impacto:
+                      Direcional (sem R$ direto) · Janela: 60 dias</div>
+                    <div style="font-size:13px; color:#374151;">Pontuação
+                      mediana sustentada pela rapidez moderada, compensando a
+                      ausência de impacto financeiro direto imediato.</div>
+                  </td>
+                </tr>
+              </table>
+              <table role="presentation" width="100%" cellpadding="0"
+                cellspacing="0"
+                style="background-color:#ffffff; border:1px solid #eeecff; border-radius:8px; margin-bottom:12px;">
+                <tr>
+                  <td style="padding:16px 20px;">
+                    <table role="presentation" width="100%" cellpadding="0"
+                      cellspacing="0">
+                      <tr>
+                        <td
+                          style="font-size:14px; font-weight:700; color:#131920;">5.
+                          Automatizar triagem via ChatBot/RAG</td>
+                        <td align="right"><span
+                            style="font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; background-color:#e6f5eb; color:#00802f;">Quick
+                            Win</span></td>
+                      </tr>
+                    </table>
+                    <table role="presentation" width="100%" cellpadding="0"
+                      cellspacing="0" style="margin:10px 0 8px;">
+                      <tr>
+                        <td
+                          style="background-color:#f3f0ff; border-radius:6px; height:8px;">
+                          <table role="presentation" cellpadding="0"
+                            cellspacing="0" style="height:8px;"><tr><td
+                                style="background-color:#4200db; width:120px; height:8px; border-radius:6px;"></td></tr></table>
+                        </td>
+                      </tr>
+                    </table>
+                    <div
+                      style="font-size:12.5px; color:#656871; margin-bottom:6px;">Score:
+                      <strong style="color:#2a0090;">60</strong> · Impacto: R$
+                      304.500 · Janela: 75 dias</div>
+                    <div style="font-size:13px; color:#374151;">Score
+                      equilibrado pelo bom retorno financeiro de R$ 304,5 mil,
+                      contrabalançado por esforço e prazo moderados.</div>
+                  </td>
+                </tr>
+              </table>
+              <table role="presentation" width="100%" cellpadding="0"
+                cellspacing="0"
+                style="background-color:#ffffff; border:1px solid #eeecff; border-radius:8px; margin-bottom:12px;">
+                <tr>
+                  <td style="padding:16px 20px;">
+                    <table role="presentation" width="100%" cellpadding="0"
+                      cellspacing="0">
+                      <tr>
+                        <td
+                          style="font-size:14px; font-weight:700; color:#131920;">6.
+                          Liquidação de estoque crítico (cenário 20%)</td>
+                        <td align="right"><span
+                            style="font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; background-color:#eeecff; color:#2a0090;">Estruturante</span></td>
+                      </tr>
+                    </table>
+                    <table role="presentation" width="100%" cellpadding="0"
+                      cellspacing="0" style="margin:10px 0 8px;">
+                      <tr>
+                        <td
+                          style="background-color:#f3f0ff; border-radius:6px; height:8px;">
+                          <table role="presentation" cellpadding="0"
+                            cellspacing="0" style="height:8px;"><tr><td
+                                style="background-color:#4200db; width:120px; height:8px; border-radius:6px;"></td></tr></table>
+                        </td>
+                      </tr>
+                    </table>
+                    <div
+                      style="font-size:12.5px; color:#656871; margin-bottom:6px;">Score:
+                      <strong style="color:#2a0090;">60</strong> · Impacto: R$
+                      940.000 · Janela: 90 dias</div>
+                    <div style="font-size:13px; color:#374151;">Score penalizado
+                      pelo alto esforço (nível 4) e prazo longo, apesar do
+                      elevado impacto de R$ 940 mil.</div>
+                  </td>
+                </tr>
+              </table>
+              <table role="presentation" width="100%" cellpadding="0"
+                cellspacing="0"
+                style="background-color:#ffffff; border:1px solid #eeecff; border-radius:8px; margin-bottom:12px;">
+                <tr>
+                  <td style="padding:16px 20px;">
+                    <table role="presentation" width="100%" cellpadding="0"
+                      cellspacing="0">
+                      <tr>
+                        <td
+                          style="font-size:14px; font-weight:700; color:#131920;">7.
+                          Renegociar fornecedores lead time >50 dias</td>
+                        <td align="right"><span
+                            style="font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; background-color:#eeecff; color:#2a0090;">Estruturante</span></td>
+                      </tr>
+                    </table>
+                    <table role="presentation" width="100%" cellpadding="0"
+                      cellspacing="0" style="margin:10px 0 8px;">
+                      <tr>
+                        <td
+                          style="background-color:#f3f0ff; border-radius:6px; height:8px;">
+                          <table role="presentation" cellpadding="0"
+                            cellspacing="0" style="height:8px;"><tr><td
+                                style="background-color:#4200db; width:112px; height:8px; border-radius:6px;"></td></tr></table>
+                        </td>
+                      </tr>
+                    </table>
+                    <div
+                      style="font-size:12.5px; color:#656871; margin-bottom:6px;">Score:
+                      <strong style="color:#2a0090;">56</strong> · Impacto:
+                      Direcional (sem R$ direto) · Janela: 90 dias</div>
+                    <div style="font-size:13px; color:#374151;">Menor score
+                      devido à janela longa de 90 dias e esforço moderado, sem
+                      impacto financeiro direto imediato.</div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="module-validation">✅ Rodado no n8n com as 7 oportunidades
+            reais. Resultado (90, 80, 70, 64, 60, 60, 56, nessa ordem) bateu
+            <strong>exatamente</strong> com o cálculo de referência feito em
+            Python antes de levar pro n8n. Zero divergência.</div>
+        </div>
+
+        <!-- MÓDULO D -->
+        <div class="module-card">
+          <div class="module-header">
+            <span class="module-badge">Módulo D</span>
+            <span class="module-title">Gerador de Relatório Executivo
+              Semanal</span>
+          </div>
+          <!-- <div class="module-flow">Schedule Trigger → Google Sheets (kpis_semanais, iniciativas_status, alertas_thresholds) → Code (calcula deltas e verifica alertas, nunca o LLM) → Gemini (redige o memo) → Code (Markdown → HTML estilizado) → Gmail</div> -->
+
+          <div class="flow-screenshot-wrap">
+            <img src="images/modulo_d_fluxo.png"
+              alt="Fluxo real do Módulo D no n8n" class="flow-screenshot">
+            <div class="flow-caption">Fluxo real rodado no n8n: 3 fontes de
+              dado lidas em sequência, cálculo em código e redação pelo
+              Gemini</div>
+          </div>
+
+          <!-- <div class="io-grid">
+            <div class="io-block io-in">
+              <div class="io-label">Entrada (deltas já calculados em código)</div>
+              <code class="io-code">{"cac_medio":{"atual":4.60,"variacao_pct":4.1},"skus_criticos":{"atual":712,"variacao_pct":2.4}}</code>
+            </div>
+            <div class="io-block io-out">
+              <div class="io-label">Saída (trecho real do relatório gerado)</div>
+              <code class="io-code">"Na semana 2026-W03, o desempenho financeiro manteve-se estável, porém registramos forte pressão nos custos operacionais de atendimento... Iniciar imediatamente a execução do plano de retenção do segmento 'Em Risco' (OP-04) para acelerar a captura do valor projetado."</code>
+            </div>
+          </div> -->
+
+          <div class="result-label">📧 Resultado: disparo do e-mail abaixo</div>
+          <div class="email-preview">
+            <div class="email-preview-chrome">Assunto: 📊 Relatório Executivo
+              Semanal · Vértice Retail</div>
+            <div class="email-preview-body">
+              <table role="presentation" width="100%" cellpadding="0"
+                cellspacing="0"
+                style="background-color:#FFFFFF; border:1px solid #EEECFF; border-left:4px solid #EEECFF; border-radius:8px; margin-bottom:14px;">
+                <tr>
+                  <td style="padding:16px 20px;">
+                    <div
+                      style="font-size:13px; font-weight:700; color:#131920; text-transform:uppercase; letter-spacing:.3px; margin-bottom:10px;">
+                      📌&nbsp; RESUMO
+                    </div>
+                    <p
+                      style="margin:0 0 8px; color:#374151; font-size:13.5px; line-height:1.7;">Na
+                      semana 2026-W03, o desempenho operacional manteve receita
+                      e margem em patamares relativamente estáveis, mas
+                      registrou pressão de custos no atendimento e aumento no
+                      CAC. Houve avanços expressivos na automação de tickets e a
+                      conclusão da correção de margem no Marketplace, porém a
+                      queda no CSAT acende um sinal de atenção. O volume
+                      financeiro realizado pelas iniciativas ainda está abaixo
+                      do ritmo necessário em relação ao total projetado para o
+                      período.</p>
+                  </td>
+                </tr>
+              </table>
+              <table role="presentation" width="100%" cellpadding="0"
+                cellspacing="0"
+                style="background-color:#FFFFFF; border:1px solid #EEECFF; border-left:4px solid #EEECFF; border-radius:8px; margin-bottom:14px;">
+                <tr>
+                  <td style="padding:16px 20px;">
+                    <div
+                      style="font-size:13px; font-weight:700; color:#131920; text-transform:uppercase; letter-spacing:.3px; margin-bottom:10px;">
+                      📈&nbsp; VARIAÇÕES
+                    </div>
+                    <p
+                      style="margin:0 0 8px; color:#374151; font-size:13.5px; line-height:1.7;"><strong>CAC
+                        médio:</strong> subiu 4,1%</p><p
+                      style="margin:0 0 8px; color:#374151; font-size:13.5px; line-height:1.7;"><strong>CSAT
+                        médio:</strong> caiu 4,1%</p><p
+                      style="margin:0 0 8px; color:#374151; font-size:13.5px; line-height:1.7;"><strong>Custo
+                        de atendimento semanal:</strong> subiu 9,0%</p><p
+                      style="margin:0 0 8px; color:#374151; font-size:13.5px; line-height:1.7;"><strong>Percentual
+                        de tickets automatizados:</strong> subiu 16,0%</p><p
+                      style="margin:0 0 8px; color:#374151; font-size:13.5px; line-height:1.7;"><em>(Nota:
+                        Receita líquida, margem % e SKUs críticos variaram
+                        dentro do limite de estabilidade de 3% e foram
+                        omitidos).</em></p>
+                  </td>
+                </tr>
+              </table>
+              <table role="presentation" width="100%" cellpadding="0"
+                cellspacing="0"
+                style="background-color:#FFFFFF; border:1px solid #F2B100; border-left:4px solid #F2B100; border-radius:8px; margin-bottom:14px;">
+                <tr>
+                  <td style="padding:16px 20px;">
+                    <div
+                      style="font-size:13px; font-weight:700; color:#131920; text-transform:uppercase; letter-spacing:.3px; margin-bottom:10px;">
+                      ⚠️&nbsp; ALERTAS
+                    </div>
+                    <ul
+                      style="margin:0; padding-left:18px; font-size:13.5px; line-height:1.7;"><li
+                        style="margin-bottom:6px; color:#374151;"><strong>Custo
+                          de atendimento semanal:</strong> O custo de
+                        atendimento semanal atingiu R$ 9.700,00, ultrapassando o
+                        teto operacional máximo estabelecido de R$
+                        9.500,00.</li></ul>
+                  </td>
+                </tr>
+              </table>
+              <table role="presentation" width="100%" cellpadding="0"
+                cellspacing="0"
+                style="background-color:#FFFFFF; border:1px solid #EEECFF; border-left:4px solid #EEECFF; border-radius:8px; margin-bottom:14px;">
+                <tr>
+                  <td style="padding:16px 20px;">
+                    <div
+                      style="font-size:13px; font-weight:700; color:#131920; text-transform:uppercase; letter-spacing:.3px; margin-bottom:10px;">
+                      🛠️&nbsp; INICIATIVAS EM ANDAMENTO
+                    </div>
+                    <ul
+                      style="margin:0; padding-left:18px; font-size:13.5px; line-height:1.7;"><li
+                        style="margin-bottom:6px; color:#374151;"><strong>Automatizar
+                          triagem via ChatBot/RAG:</strong> 35% executado, R$
+                        38.000 realizado de R$ 304.500 projetado</li><li
+                        style="margin-bottom:6px; color:#374151;"><strong>Correção
+                          de margem do Marketplace:</strong> 100% executado, R$
+                        117.500 realizado de R$ 117.500 projetado</li><li
+                        style="margin-bottom:6px; color:#374151;"><strong>Realocação
+                          de investimento de marketing:</strong> 10% executado,
+                        R$ 0 realizado de R$ 0 projetado</li><li
+                        style="margin-bottom:6px; color:#374151;"><strong>Liquidação
+                          de estoque crítico (cenário 20%):</strong> 15%
+                        executado, R$ 150.000 realizado de R$ 940.000
+                        projetado</li><li
+                        style="margin-bottom:6px; color:#374151;"><strong>Renegociar
+                          fornecedores lead time >50 dias:</strong> 5%
+                        executado, R$ 0 realizado de R$ 0 projetado</li></ul>
+                  </td>
+                </tr>
+              </table>
+              <table role="presentation" width="100%" cellpadding="0"
+                cellspacing="0"
+                style="background-color:#FFFFFF; border:1px solid #EEECFF; border-left:4px solid #EEECFF; border-radius:8px; margin-bottom:14px;">
+                <tr>
+                  <td style="padding:16px 20px;">
+                    <div
+                      style="font-size:13px; font-weight:700; color:#131920; text-transform:uppercase; letter-spacing:.3px; margin-bottom:10px;">
+                      💰&nbsp; IMPACTO REALIZADO VS PROJETADO
+                    </div>
+                    <ul
+                      style="margin:0; padding-left:18px; font-size:13.5px; line-height:1.7;"><li
+                        style="margin-bottom:6px; color:#374151;"><strong>Impacto
+                          Realizado Total:</strong> R$ 305.500,00</li><li
+                        style="margin-bottom:6px; color:#374151;"><strong>Impacto
+                          Projetado Total:</strong> R$ 3.572.000,00</li><li
+                        style="margin-bottom:6px; color:#374151;"><strong>Avaliação
+                          de Ritmo:</strong> O resultado realizado representa
+                        cerca de 8,5% do total projetado, indicando que o plano
+                        de iniciativas <strong>não está no ritmo ideal</strong>,
+                        puxado principalmente pelo fato de a maior iniciativa
+                        (Retenção segmento Em Risco, orçada em R$ 2,21 mi) ainda
+                        não ter sido iniciada.</li></ul>
+                  </td>
+                </tr>
+              </table>
+              <table role="presentation" width="100%" cellpadding="0"
+                cellspacing="0"
+                style="background-color:#F3F0FF; border:1px solid #8575FF; border-left:4px solid #8575FF; border-radius:8px; margin-bottom:14px;">
+                <tr>
+                  <td style="padding:16px 20px;">
+                    <div
+                      style="font-size:13px; font-weight:700; color:#2A0090; text-transform:uppercase; letter-spacing:.3px; margin-bottom:10px;">
+                      ✅&nbsp; RECOMENDAÇÃO
+                    </div>
+                    <p
+                      style="margin:0 0 8px; color:#374151; font-size:13.5px; line-height:1.7;">Priorizar
+                      nesta semana o pontapé inicial na iniciativa de retenção
+                      do segmento "Em Risco" (OP-04) para destravar a principal
+                      fatia de retorno financeiro do trimestre. Simultaneamente,
+                      a liderança de Atendimento deve diagnosticar os gargalos
+                      operacionais para conter o estouro no custo semanal e
+                      estancar a queda no CSAT.</p>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="module-validation">✅ Desenho garante que o LLM
+            <strong>nunca calcula variação percentual sozinho</strong>: só
+            recebe números já prontos e escreve o texto. Mitiga o risco de
+            alucinação aritmética, o erro mais comum em relatórios gerados por
+            IA.</div>
+        </div>
+
+        <!-- MÓDULO B -->
+        <div class="module-card">
+          <div class="module-header">
+            <span class="module-badge">Módulo B</span>
+            <span class="module-title">Classificador de Atendimento com
+              RAG</span>
+          </div>
+          <div class="module-flow">Chat Trigger → Google Sheets
+            (base_conhecimento, tickets_atendimento, pedidos_rastreio) → Code
+            (extrai nº de pedido, busca status real) → Gemini (classifica +
+            responde via RAG) → Code (separa categoria da resposta
+            visível)</div>
+
+          <div class="flow-screenshot-wrap">
+            <img src="images/modulo_b_fluxo.png"
+              alt="Fluxo real do Módulo B no n8n" class="flow-screenshot">
+            <div class="flow-caption">Fluxo real rodado no n8n, com chat ao
+              vivo,
+              3 fontes de dado e resposta via Gemini</div>
+          </div>
+
+          <div class="result-label">🎥 Demonstração em vídeo (chat funcionando
+            ao vivo)</div>
+          <video controls
+            style="width:100%; border-radius:8px; border:1px solid var(--border); margin-bottom:16px;">
+            <source src="videos/modulo_b_demo.mp4" type="video/mp4">
+            Seu visualizador não suporta vídeo incorporado. Abra o arquivo
+            videos/modulo_b_demo.mp4 diretamente.
+          </video>
+
+          <div class="result-label">💬 9 casos de teste reais (entrada digitada
+            → resposta do agente)</div>
+          <table>
+            <tr><th style="width:30%">Entrada (mensagem digitada)</th><th
+                style="width:18%">Resultado esperado</th><th>Saída real
+                (resposta do agente)</th></tr>
+            <tr><td>"meu pedido não chegou e já era pra ter chegado há uma semana"</td><td>Onde
+                está meu
+                pedido?</td><td>"Peço desculpas pelo atraso. Vou verificar o motivo agora — se passou de 7 dias úteis do prazo estimado, você tem direito a frete grátis na próxima compra ou reembolso do valor do frete pago."</td></tr>
+            <tr><td>"a blusa que comprei veio com a costura toda desfiada"</td><td>Defeito</td><td>"Sinto muito por isso! Problemas na costura são cobertos pela garantia de defeito de fabricação. Você pode solicitar a troca ou o reembolso do valor sem nenhum custo de frete em até 30 dias corridos. Poderia me enviar uma foto do ponto danificado e o número do seu pedido?"</td></tr>
+            <tr><td>"o vestido ficou apertado, dá pra trocar por um tamanho maior?"</td><td>Troca
+                de
+                Tamanho</td><td>"Sim, é possível trocar! As trocas por tamanho podem ser feitas em até 30 dias após o recebimento, sem custo. Me informe o número do seu pedido e o tamanho desejado."</td></tr>
+            <tr><td>"esqueci a senha da minha conta, como faço pra entrar de novo?"</td><td>Dúvida
+                Técnica</td><td>"Clique em 'Esqueci minha senha' na tela de login e siga o link enviado para o seu e-mail cadastrado — o link é válido por 30 minutos."</td></tr>
+            <tr><td>"paguei no pix faz 2 horas e o pedido continua como pendente"</td><td>Pagamento
+                não
+                aprovado</td><td>"O PIX costuma compensar em minutos, mas pode levar até 30 minutos em horários de pico. Como já se passaram 2 horas, me envie o comprovante de pagamento para que eu confirme manualmente!"</td></tr>
+            <tr><td>"queria agradecer, o produto chegou rapidinho e é lindo"</td><td>Elogio</td><td>"Que ótimo saber! Muito obrigado pelo carinho — fico feliz que tenha gostado do produto e que a entrega tenha sido rápida. Vou repassar seu elogio para as equipes!"</td></tr>
+            <tr><td><strong>[cliente irritado]</strong>
+                "estou muito irritado, o produto chegou quebrado e ninguém me responde, quero meu dinheiro de volta AGORA"</td><td>Defeito</td><td>"Sinto muito pelo ocorrido! Entendo perfeitamente a sua insatisfação. Como o produto chegou danificado, você tem até 30 dias corridos para solicitar o reembolso sem custo de frete. Me envie uma foto da embalagem e do produto para abrir o chamado com prioridade."</td></tr>
+            <tr><td><strong>[fora de escopo]</strong>
+                "vocês vendem produto pra pets?"</td><td>Nenhuma (fora do
+                domínio da
+                loja)</td><td>"A Vértice Retail é um e-commerce especializado em moda e beleza, por isso não trabalhamos com produtos para pets. Se precisar de algo relacionado a vestuário, calçados ou produtos de beleza, estou à disposição!"</td></tr>
+            <tr><td><strong>[pedido real]</strong>
+                "o ORD-034337 tá com pagamento pendente há dias, o que houve?"</td><td>Onde
+                está meu pedido? / Pagamento não
+                aprovado</td><td>"Verifiquei no sistema que o seu pedido ORD-034337 está com o status de 'Pagamento pendente'. Se foi via PIX, a compensação costuma levar minutos; se já pagou e continua pendente, me envie o comprovante. Se foi boleto, pode levar até 2 dias úteis. Se cartão, pode ter sido bloqueio antifraude ou limite insuficiente."</td></tr>
+          </table>
+
+          <div class="module-validation">✅ 9/9 casos com categoria correta,
+            política sempre vinda da base (nunca inventada), e tom adequado a
+            cada cenário, incluindo manter a cordialidade sob pressão (caso 7)
+            e recusar corretamente uma pergunta fora de escopo em vez de
+            inventar resposta (caso 8).</div>
+        </div>
+      </section>
+
+      <section id="roadmap">
+        <h2><span class="num-marker">7</span>Roadmap 30-60-90 dias</h2>
+        <p
+          style="color:var(--muted); font-size:13.5px; margin-top:-8px;">Iniciativas
+          de captura mais longa (60-90 dias) começam já na Fase 1, já que não
+          faz
+          sentido esperar pra começar algo que já sabemos que vai levar
+          tempo.</p>
+        <div class="callout" style="margin-bottom:20px;">
+          <strong>Coerência com o Módulo C:</strong> a campanha de retenção
+          "Em Risco" foi antecipada pra Fase 1 porque é a 2ª maior pontuação do
+          motor de priorização (80/100, atrás só da realocação de marketing), e
+          porque o próprio Módulo D, no relatório executivo gerado, já sinalizou
+          que o atraso em iniciá-la é a principal causa do ritmo abaixo do
+          esperado. Esse ajuste é exatamente o tipo de retroalimentação que os 3
+          módulos deveriam gerar entre si.
+        </div>
+
+        <div class="roadmap-grid">
+          <div class="roadmap-phase">
+            <div class="phase-title">Fase 1 <span class="phase-days">Dias
+                0-30</span></div>
+            <div class="phase-item"><span class="badge quickwin">Concluir</span>
+              Realocação de investimento de marketing</div>
+            <div class="phase-item"><span class="badge quickwin">Concluir</span>
+              Correção de margem do Marketplace</div>
+            <div class="phase-item"><span
+                class="badge estruturante">Disparar</span> Campanha de retenção
+              "Em Risco": oferta pronta e enviada ao segmento, não só
+              desenhada</div>
+            <div class="phase-item"><span
+                class="badge estruturante">Iniciar</span> Automação de
+              atendimento (piloto 1 categoria)</div>
+          </div>
+          <div class="roadmap-phase">
+            <div class="phase-title">Fase 2 <span class="phase-days">Dias
+                31-60</span></div>
+            <div class="phase-item"><span class="badge estruturante">Em
+                andamento</span> Retenção "Em Risco": medir resposta e ajustar
+              oferta</div>
+            <div class="phase-item"><span class="badge estruturante">Em
+                andamento</span> Automação (expandir p/ 4 categorias)</div>
+            <div class="phase-item"><span
+                class="badge estruturante">Iniciar</span> Renegociar
+              fornecedores lead time longo</div>
+            <div class="phase-item"><span
+                class="badge estruturante">Iniciar</span> Liquidação de estoque
+              crítico</div>
+            <div class="phase-item"><span
+                class="badge estruturante">Iniciar</span> Revisar onboarding
+              (Promissor)</div>
+          </div>
+          <div class="roadmap-phase">
+            <div class="phase-title">Fase 3 <span class="phase-days">Dias
+                61-90</span></div>
+            <div class="phase-item"><span class="badge quickwin">Concluir</span>
+              Automação: medir economia real vs projetada</div>
+            <div class="phase-item"><span class="badge quickwin">Concluir</span>
+              Retenção: medir receita protegida real</div>
+            <div class="phase-item"><span class="badge quickwin">Concluir</span>
+              Liquidação de estoque (20% planejado)</div>
+            <div class="phase-item"><span class="badge quickwin">Concluir</span>
+              Fechar renegociação de fornecedores</div>
+            <div class="phase-item"><span class="badge quickwin">Concluir</span>
+              Implementar ajustes de onboarding</div>
+          </div>
+        </div>
+
+        <table style="margin-top:20px;">
+          <tr><th>Iniciativa</th><th>Responsável</th><th>Dependência</th><th>KPI
+              de acompanhamento</th></tr>
+          <tr><td>Correção de margem
+              Marketplace</td><td>Comercial/Parcerias</td><td>Nenhuma</td><td>Margem
+              % do canal</td></tr>
+          <tr><td>Realocação de
+              marketing</td><td>Marketing</td><td>Nenhuma</td><td>ROAS por
+              canal</td></tr>
+          <tr><td>Automação de atendimento</td><td>Squad Dados/IA +
+              Atendimento</td><td>Validação da base de conhecimento</td><td>%
+              automatizado, custo/ticket</td></tr>
+          <tr><td>Retenção "Em Risco"</td><td>CRM/Retenção</td><td>Orçamento de
+              cupom aprovado</td><td>Taxa de reativação</td></tr>
+          <tr><td>Renegociar fornecedores</td><td>Operações/Supply
+              Chain</td><td>Lista de fornecedores críticos</td><td>Lead time
+              médio</td></tr>
+          <tr><td>Liquidação de estoque</td><td>Comercial +
+              Marketing</td><td>Margem mínima definida</td><td>% de estoque
+              crítico liquidado</td></tr>
+          <tr><td>Revisar
+              onboarding</td><td>CX/Produto</td><td>Nenhuma</td><td>Tickets por
+              cliente novo</td></tr>
+        </table>
+      </section>
+
+      <section id="governanca">
+        <h2><span class="num-marker">8</span>Governança e Riscos</h2>
+        <p style="color:var(--muted); font-size:13.5px; margin-top:-8px;">Riscos
+          de dado estão detalhados na seção de Evidências. Aqui, os riscos
+          específicos de IA, cada um com mitigação já testada, não só
+          teórica.</p>
+
+        <div class="risk-grid">
+          <div class="risk-card">
+            <div class="risk-title"
+              style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;"><span>🧠
+                Alucinação</span><span class="badge refutada"
+                style="flex-shrink:0;">Técnico · Alto</span></div>
+            <p class="risk-text"><strong>Risco:</strong> o agente responder com
+              convicção algo que não é verdade, como inventar uma política de
+              troca que não existe, por exemplo.</p>
+            <p class="risk-text"><strong>Mitigação:</strong> prompt restringe a
+              resposta ao conteúdo da base de conhecimento (RAG). Testado com
+              pergunta fora de escopo ("produto pra pets?"), e o agente recusou
+              em vez de inventar.</p>
+          </div>
+          <div class="risk-card">
+            <div class="risk-title"
+              style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;"><span>😠
+                Viés e tom inadequado</span><span class="badge parcial"
+                style="flex-shrink:0;">Reputacional · Médio</span></div>
+            <p class="risk-text"><strong>Risco:</strong> resposta fria ou mal
+              calibrada numa situação sensível, piorando a experiência em vez de
+              resolver.</p>
+            <p class="risk-text"><strong>Mitigação:</strong> testado com cliente
+              irritado em caixa alta: tom cordial mantido. Recomenda-se
+              escalonamento automático para casos de alta insatisfação ou menção
+              a "Procon"/"processo".</p>
+          </div>
+          <div class="risk-card">
+            <div class="risk-title"
+              style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;"><span>🔒
+                Privacidade (LGPD)</span><span class="badge refutada"
+                style="flex-shrink:0;">Regulatório · Alto</span></div>
+            <p class="risk-text"><strong>Risco:</strong> consulta a dado pessoal
+              (status de pedido) sem validar identidade de quem pergunta.</p>
+            <p class="risk-text"><strong>Mitigação:</strong> validar identidade
+              antes de expor status em produção; definir política de retenção e
+              anonimização dos registros de conversa.</p>
+          </div>
+          <div class="risk-card">
+            <div class="risk-title"
+              style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;"><span>👥
+                Adoção pela equipe</span><span class="badge parcial"
+                style="flex-shrink:0;">Organizacional · Médio</span></div>
+            <p class="risk-text"><strong>Risco:</strong> equipe de atendimento
+              enxergar a automação como ameaça ao invés de ferramenta de
+              apoio.</p>
+            <p class="risk-text"><strong>Mitigação:</strong> comunicar como
+              redução de volume repetitivo (78% dos tickets), não substituição.
+              Envolver o time na validação da base de conhecimento.</p>
+          </div>
+          <div class="risk-card">
+            <div class="risk-title"
+              style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;"><span>💸
+                Custo e dependência de fornecedor</span><span
+                class="badge parcial" style="flex-shrink:0;">Estratégico ·
+                Médio</span></div>
+            <p class="risk-text"><strong>Risco:</strong> dependência de uma
+              única API externa (Gemini), sujeita a mudança de preço ou política
+              de uso.</p>
+            <p class="risk-text"><strong>Mitigação:</strong> desenho portável:
+              prompt + RAG simples, sem fine-tuning, o que torna a migração pra
+              outro provedor uma troca de peça, não uma reconstrução.</p>
+          </div>
+          <div class="risk-card">
+            <div class="risk-title"
+              style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;"><span>🗂️
+                Desatualização da base de conhecimento</span><span
+                class="badge parcial" style="flex-shrink:0;">Operacional ·
+                Médio</span></div>
+            <p class="risk-text"><strong>Risco:</strong> políticas da empresa
+              mudam (prazo de troca, frete, promoções) e a base de conhecimento
+              não é atualizada, o agente passa a responder com informação
+              obsoleta sem que ninguém perceba.</p>
+            <p class="risk-text"><strong>Mitigação:</strong> definir um dono
+              formal da base (provavelmente o time de Atendimento) e uma rotina
+              de revisão periódica, com data de última atualização visível em
+              cada entrada.</p>
+          </div>
+          <div class="risk-card">
+            <div class="risk-title"
+              style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;"><span>🖥️
+                Indisponibilidade da infraestrutura</span><span
+                class="badge refutada" style="flex-shrink:0;">Técnico ·
+                Alto</span></div>
+            <p class="risk-text"><strong>Risco:</strong> o n8n roda numa
+              instância única (self-hosted); se ela cair, os 3 módulos
+              (atendimento, priorização e relatório) param ao mesmo tempo, sem
+              redundância.</p>
+            <p class="risk-text"><strong>Mitigação:</strong> monitoramento com
+              alerta de indisponibilidade, e um plano de contingência manual
+              (equipe assume o atendimento) documentado para os primeiros dias
+              de operação.</p>
+          </div>
+          <div class="risk-card">
+            <div class="risk-title"
+              style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;"><span>🛡️
+                Manipulação do agente (prompt injection)</span><span
+                class="badge refutada" style="flex-shrink:0;">Segurança ·
+                Alto</span></div>
+            <p class="risk-text"><strong>Risco:</strong> um usuário
+              mal-intencionado tentar induzir o agente a ignorar as instruções
+              do sistema, revelar o prompt interno ou vazar conteúdo da base
+              fora do contexto de atendimento.</p>
+            <p class="risk-text"><strong>Mitigação:</strong> camada de instrução
+              explícita contra desvio de escopo, e revisão amostral de conversas
+              em produção pra identificar tentativas de manipulação antes que
+              virem padrão.</p>
+          </div>
+          <div class="risk-card">
+            <div class="risk-title"
+              style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;"><span>📈
+                Gargalo humano por volume de escalonamento</span><span
+                class="badge parcial" style="flex-shrink:0;">Operacional ·
+                Médio</span></div>
+            <p class="risk-text"><strong>Risco:</strong> o dimensionamento do
+              business case assume 70-80% de automação efetiva; se a taxa real
+              de escalonamento para humano for maior que o previsto, o time de
+              atendimento vira gargalo em vez de alívio.</p>
+            <p class="risk-text"><strong>Mitigação:</strong> acompanhar a taxa
+              real de escalonamento desde a primeira semana em produção e
+              ajustar a meta de economia (e o dimensionamento da equipe) com
+              base no dado real, não na projeção.</p>
+          </div>
+          <div class="risk-card">
+            <div class="risk-title"
+              style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;"><span>🚀
+                Reaproveitamento do motor para outras áreas</span><span
+                class="badge estruturante"
+                style="flex-shrink:0;">Oportunidade</span></div>
+            <p class="risk-text"><strong>Risco:</strong> o mesmo padrão (RAG
+              sobre base de conhecimento + priorização determinística) resolve
+              problemas parecidos em Marketing, Vendas e Financeiro, mas isso só
+              acontece se for perseguido de propósito.</p>
+            <p class="risk-text"><strong>Mitigação:</strong> depois de validar o
+              Módulo B em produção, documentar o padrão como um modelo
+              reaproveitável e mapear o próximo caso de uso candidato antes de
+              esperar a demanda aparecer sozinha.</p>
+          </div>
+          <div class="risk-card">
+            <div class="risk-title"
+              style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;"><span>🧪
+                Cobertura limitada de testes do agente</span><span
+                class="badge parcial" style="flex-shrink:0;">Técnico ·
+                Médio</span></div>
+            <p class="risk-text"><strong>Risco:</strong> os 9 casos de teste do
+              Módulo B cobrem as 6 categorias e alguns cenários difíceis de
+              propósito, mas o volume real de produção (dezenas de milhares de
+              tickets/ano) vai trazer variações de linguagem, gírias e
+              casos-limite que esse conjunto não capturou.</p>
+            <p class="risk-text"><strong>Mitigação:</strong> expandir o conjunto
+              de teste antes do lançamento pleno, e manter uma amostragem
+              semanal de conversas reais revisada por humano nos primeiros 60
+              dias de operação.</p>
+          </div>
+          <div class="risk-card">
+            <div class="risk-title"
+              style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;"><span>📊
+                Dado simulado como base de decisão real</span><span
+                class="badge parcial" style="flex-shrink:0;">Estratégico ·
+                Médio</span></div>
+            <p class="risk-text"><strong>Risco:</strong> todo o diagnóstico e os
+              módulos de IA foram construídos sobre o Data Room simulado do
+              case, então decisões reais de investimento não deveriam se apoiar
+              nesses números sem revalidação contra o dado de produção da
+              empresa.</p>
+            <p class="risk-text"><strong>Mitigação:</strong> tratar os valores
+              deste relatório como direção estratégica, não como orçamento
+              fechado; a primeira ação de qualquer iniciativa aprovada deve ser
+              reproduzir o cálculo com dado real antes de comprometer verba.</p>
+          </div>
+        </div>
       </section>
 
       <section id="business-case">
-        <h2><span class="num-marker">7</span>Business Case</h2>
+        <h2><span class="num-marker">9</span>Business Case</h2>
         <div class="kpi-grid">
           <div class="kpi"><div class="value">R$2,6-4,7 Mi</div><div
               class="label">Impacto anual defensável (atendimento + retenção +
@@ -1104,7 +2170,8 @@
         <p
           style="font-size:12.5px; color:var(--muted-light); margin-top:10px;">Correção
           de margem do Marketplace e realocação de marketing são os quick wins
-          financeiros reais — payback imediato, sem investimento novo. Automação
+          financeiros reais, com payback imediato, sem investimento novo.
+          Automação
           e retenção têm esforço de implementação, mas ROI muito favorável.
           Estoque é a iniciativa mais lenta de capturar, mas de maior volume de
           capital.</p>
@@ -1113,13 +2180,13 @@
           <strong>Limitação de dado:</strong> investimento total em Marketing
           (R$75,5 Mi) é 4x a receita real (R$18,9 Mi), e Marketing reporta 41,7
           Mi de "conversões" contra 27.759 pedidos reais. As duas bases não são
-          reconciliáveis em R$ absoluto — a realocação de marketing é
+          reconciliáveis em R$ absoluto, então a realocação de marketing é
           direcional, não dimensionada em R$.
         </div>
       </section>
 
       <section id="dashboard">
-        <h2><span class="num-marker">8</span>Dashboard interativo (Power
+        <h2><span class="num-marker">10</span>Dashboard interativo (Power
           BI)</h2>
         <div
           style="display: flex; justify-content: center; margin-bottom: 24px;">
@@ -1130,8 +2197,46 @@
         </div>
       </section>
 
+      <section id="licoes">
+        <h2><span class="num-marker">11</span>Lições aprendidas</h2>
+        <p style="color:var(--muted); font-size:13.5px; margin-top:-8px;">O que
+          cada pessoa do trio levou desse case, em construção.</p>
+
+        <div class="lesson-personal-grid">
+          <div class="lesson-personal-card"
+            style="border-style: solid; border-left: 4px solid var(--primary-light);">
+            <div class="lesson-personal-name">Edilberto Cantuária</div>
+            <div class="lesson-personal-role">Diagnóstico, Dados, Dashboard &
+              Protótipo de IA</div>
+            <p class="lesson-personal-text" style="font-style: normal;">O
+              projeto foi ótimo porque me deu a oportunidade de usar IA
+              analisando dados de verdade, enxergando pontos que eu sozinho não
+              teria percebido. Ela me ajudou em ferramentas concretas: montar as
+              tabelas fato/dimensão do modelo de BI, criar dados fictícios pra
+              acelerar os testes do n8n, e otimizar meu tempo em cada etapa. Mas
+              o mais importante: sinto que a IA não substituiu meu potencial
+              analítico: ela funcionou como uma lupa e uma luz nos pontos onde
+              eu precisava enxergar com mais detalhe, o que resultou num
+              diagnóstico mais certeiro do que eu teria feito sozinho, no mesmo
+              tempo.</p>
+          </div>
+          <div class="lesson-personal-card">
+            <div class="lesson-personal-name">[Nome 2]</div>
+            <div class="lesson-personal-role">[Frente do case]</div>
+            <p class="lesson-personal-text">[A preencher: principal aprendizado
+              pessoal do projeto]</p>
+          </div>
+          <div class="lesson-personal-card">
+            <div class="lesson-personal-name">[Nome 3]</div>
+            <div class="lesson-personal-role">[Frente do case]</div>
+            <p class="lesson-personal-text">[A preencher: principal aprendizado
+              pessoal do projeto]</p>
+          </div>
+        </div>
+      </section>
+
       <div class="footer-note">
-        Projeto Vértice — Artefato de processo gerado a partir de cálculos
+        Projeto Vértice: Artefato de processo gerado a partir de cálculos
         determinísticos sobre um Data Room simulado. Premissas e limites de dado
         documentados nas seções correspondentes.
       </div>
