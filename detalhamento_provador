@@ -1,5 +1,15 @@
 link para exemplos do fluxo: https://docs.google.com/document/d/14PIaK5Omzo4LEFvmcQhA52DoeH4GiTzuyWeJeXo_s2o/edit?usp=sharing
 
+Riscos associados:
+
+Aumento de custo por bugs ou bots 
+Categoria/Nível: Financeiro - Alto
+
+Risco: Disparos excessivos acidentais do n8n ou ataques maliciosos (bots) no Webhook de entrada, gerando consumo descontrolado de tokens na API do Gemini.
+
+Mitigação: Implementar rate-limiting no nó Webhook de entrada, definir limites orçamentais para Google Cloud e alertas de pico atípico no n8n.
+
+
 Roadmap – Provador Virtual
 
 1. Implementação do MVP
