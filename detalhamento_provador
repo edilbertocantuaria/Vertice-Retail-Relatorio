@@ -1,0 +1,25 @@
+link para exemplos do fluxo: https://docs.google.com/document/d/14PIaK5Omzo4LEFvmcQhA52DoeH4GiTzuyWeJeXo_s2o/edit?usp=sharing
+
+Roadmap – Provador Virtual
+
+1. Implementação do MVP
+
+Desenvolver um provador virtual que permita ao cliente informar suas medidas e receber uma recomendação de tamanho para cada peça. O sistema deverá registrar a sessão do provador, as medidas informadas, a peça consultada e o tamanho recomendado.
+
+2. Análise de impacto
+
+Após a implementação, realizar uma análise de dados para avaliar o impacto do provador sobre as vendas e a experiência de compra. Serão analisadas principalmente a evolução da taxa de conversão dos produtos com provador em comparação com produtos sem a funcionalidade, a evolução das vendas dos produtos com provador e a taxa de devolução entre clientes que utilizaram o provador e clientes que compraram a mesma peça sem utilizá-lo.
+
+Para identificar compras realizadas com auxílio do provador, a compra será considerada relacionada à ferramenta quando o cliente adquirir o tamanho recomendado em até 7 dias após sua utilização. A análise também poderá ser realizada ao longo do tempo, comparando a evolução dos produtos que passaram a oferecer o provador com produtos semelhantes que ainda não possuem a funcionalidade.
+
+3. Validação da proposta
+
+Com base nos resultados obtidos, avaliar se a utilização do provador apresenta impacto positivo em indicadores como conversão, vendas e devoluções. Caso os resultados indiquem potencial de geração de valor para a plataforma, avançar para a expansão da funcionalidade.
+
+4. Incentivo ao cadastro de medidas pelos vendedores
+
+Criar estratégias para incentivar os fornecedores a enviar as medidas e informações de tamanho de suas peças. Com uma maior quantidade de produtos com medidas cadastradas, o provador poderá ser disponibilizado para mais produtos e clientes, ampliando a base de dados e o potencial de impacto da ferramenta.
+
+5. Expansão
+
+Expandir o provador para uma parcela maior dos produtos e continuar acompanhando os indicadores de conversão, vendas e devolução. A partir dos dados acumulados, avaliar novas melhorias na recomendação de tamanho e novas formas de gerar valor para clientes e vendedores.
