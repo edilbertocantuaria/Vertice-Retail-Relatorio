@@ -13,28 +13,28 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        0,
-        112
+        -16,
+        144
       ],
       "webhookId": "09aefc6f-5105-4298-bcd2-95d8c0e566a8"
     },
     {
       "parameters": {
-        "jsCode": "const body = $('Entrada de Dados (Webhook)').first().json.body || {};\nconst clienteId = body.cliente_id || body.customer_id || \"ANONYMOUS\";\nconst produto = body.produto || {};\n\n// 1. Obtém a tabela enviada direto no objeto do produto\nconst tabelaOriginal = Array.isArray(produto.tabela_medidas) ? produto.tabela_medidas : [];\nconst possuiTabela = tabelaOriginal.length > 0;\n\n// Remove valores nulos/vazios das faixas do produto para economizar tokens\nconst tabelaLimpa = tabelaOriginal.map(row => {\n  const rowLimpa = {};\n  for (const [chave, valor] of Object.entries(row)) {\n    if (valor !== null && valor !== \"\" && valor !== undefined) {\n      rowLimpa[chave] = valor;\n    }\n  }\n  return rowLimpa;\n});\n\n// 2. Extrai APENAS as medidas corporais do cliente\nconst camposMedidas = ['cintura', 'busto', 'quadril', 'altura', 'comprimento_corpo', 'coxa', 'ombro'];\nconst medidasClienteLimpas = {};\nlet possuiMedidas = false;\n\nfor (const campo of camposMedidas) {\n  if (body[campo] !== undefined && body[campo] !== null && body[campo] !== \"\") {\n    medidasClienteLimpas[campo] = body[campo];\n    possuiMedidas = true;\n  }\n}\n\nreturn {\n  json: {\n    metadata: {\n      cliente_id: clienteId,\n      sku: produto.sku || body.sku || body.sku_id || \"N/A\",\n      timestamp: new Date().toISOString()\n    },\n    status_validacao: {\n      sku_encontrado: possuiTabela, // Mantido o nome para não quebrar a regra do nó If\n      possui_medidas: possuiMedidas\n    },\n    detalhes_produto: {\n      nome_peca: produto.nome_peca || body.nome_peca || \"Não especificado\",\n      comprimento_peca: produto.comprimento_peca || body.comprimento || \"Não especificado\"\n    },\n    medidas_cliente: medidasClienteLimpas,\n    tabela_medidas_produto: tabelaLimpa\n  }\n};"
+        "jsCode": "const body = $('Entrada de Dados (Webhook)').first().json.body || $('Entrada de Dados (Webhook)').first().json;\nconst clienteId = body.cliente_id || body.customer_id || \"ANONYMOUS\";\nconst produto = body.produto || {};\n\nconst tabelaOriginal = produto.tabela_medidas || body.tabela_medidas || [];\nconst possuiLinhas = Array.isArray(tabelaOriginal) && tabelaOriginal.length > 0;\n\nconst tabelaLimpa = possuiLinhas ? tabelaOriginal.map(row => {\n  const rowLimpa = {};\n  for (const [chave, valor] of Object.entries(row)) {\n    if (valor !== null && valor !== \"\" && valor !== undefined) {\n      rowLimpa[chave] = valor;\n    }\n  }\n  return rowLimpa;\n}) : [];\n\nconst possuiFaixasNumericas = tabelaLimpa.some(row =>\n  Object.keys(row).some(k => k.endsWith('_min') || k.endsWith('_max'))\n);\n\nconst ehTamanhoUnico = !possuiFaixasNumericas && tabelaLimpa.some(row => {\n  const valor = (row.tamanho || \"\")\n    .toString()\n    .normalize(\"NFD\")\n    .replace(/[\\u0300-\\u036f]/g, \"\")\n    .toLowerCase();\n\n  return valor === \"unico\";\n});\n\nconst tabelaUtilizavel = possuiLinhas && (possuiFaixasNumericas || ehTamanhoUnico);\n\nconst fonteMedidas = body.medidas_cliente || body;\nconst camposMedidas = [\n  'cintura',\n  'busto',\n  'quadril',\n  'altura',\n  'comprimento_corpo',\n  'coxa',\n  'ombro'\n];\n\nconst medidasClienteLimpas = {};\nlet possuiMedidas = false;\n\nfor (const campo of camposMedidas) {\n  if (\n    fonteMedidas[campo] !== undefined &&\n    fonteMedidas[campo] !== null &&\n    fonteMedidas[campo] !== \"\"\n  ) {\n    medidasClienteLimpas[campo] = Number(fonteMedidas[campo]);\n    possuiMedidas = true;\n  }\n}\n\nreturn {\n  json: {\n    metadata: {\n      cliente_id: clienteId,\n      sku: produto.sku || body.sku || \"N/A\",\n      timestamp: new Date().toISOString()\n    },\n\n    status_validacao: {\n      sku_encontrado: tabelaUtilizavel,\n      possui_medidas: possuiMedidas,\n      eh_tamanho_unico: ehTamanhoUnico\n    },\n\n    detalhes_produto: {\n      nome_peca: produto.nome_peca || body.nome_peca || \"Não especificado\"\n    },\n\n    medidas_cliente: medidasClienteLimpas,\n    tabela_medidas: tabelaLimpa\n  }\n};"
       },
       "id": "58bbcad8-453a-4b27-ae27-0ab208064a59",
       "name": "Consolida Payload",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        448,
-        112
+        160,
+        144
       ]
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "==Atue como um motor de cálculo de tamanhos estritamente factual e objetivo\n\nDETALHES DO PRODUTO:\n{{ JSON.stringify($json.detalhes_produto) }}\n\nDADOS DO CLIENTE:\n{{ JSON.stringify($json.medidas_cliente) }}\n\nTABELA DO VENDEDOR (Faixas do produto):\n{{ JSON.stringify($json.tabela_medidas_produto) }}\n\nREGRAS DE RECOMENDAÇÃO:\n1. Escolha APENAS UM tamanho principal baseado no enquadramento das medidas do cliente nas faixas da tabela.\n2. Proibido opinar sobre caimento ou estilo. NÃO use palavras como \"confortável\", \"equilibrado\", \"perfeito\", \"caimento\", \"ajustado\" ou \"linhas do corpo\".\n3. NÃO mencione outros tamanhos. Foque exclusivamente no tamanho selecionado.\n4. É RIGOROSAMENTE PROIBIDO repor ou exibir os valores numéricos das medidas do cliente (ex: NÃO escreva \"74cm\", \"92cm\", \"168cm\") no texto da resposta.\n5. O campo recomendacao_consultiva deve conter APENAS UMA frase técnica citando o nome da peça , confirmando apenas que os dados informados correspondem à tabela.\n\nFORMATO E EXEMPLO DE SAÍDA ESPERADA (Retorne apenas JSON puro, sem blocos ```json):\n{\n  \"tamanho_recomendado\": \"M\",\n  \"fator_confianca\": \"Alta (Medidas corporais fornecidas em conformidade com a tabela)\",\n  \"recomendacao_consultiva\": \"Tamanho recomendado para Vestido Midi: M. As medidas informadas correspondem ao intervalo deste tamanho na tabela do vendedor.\"\n}",
+        "text": "=Atue como Consultor Técnico de Provador Virtual.\n\nDADOS DO PRODUTO:\nNome da Peça: {{ $json.detalhes_produto?.nome_peca || $json.tabela_medidas?.[0]?.nome_peca }}\n\nTABELA DE MEDIDAS:\n{{ JSON.stringify($json.tabela_medidas) }}\n\nMEDIDAS DO CLIENTE:\n{{ JSON.stringify($json.medidas_cliente) }}\n\nREGRAS DE RESPOSTA:\n1. Seja curto e direto (máximo 2 frases na análise).\n2. Sem adjetivos de marketing, sem mencionar comprimento da peça e sem exibir os valores numéricos do cliente.\n3. No campo \"Peça:\", utilize ESTRITAMENTE o nome informado em \"Nome da Peça\" nos DADOS DO PRODUTO (ex: \"Vestido Midi Cotelê\", \"Camiseta Básica\", \"Saia Plissada\"). \n4. Em caso de divergência de medidas: informe exatamente qual região corporal corresponde a qual tamanho. Apresente o maior tamanho como opção mais solta e o menor como opção mais justa para decisão do cliente.\n\nFORMATO DE SAÍDA:\n\nRecomendação: [Tamanho Maior] (Alternativa: [Tamanho Menor se houver])\nPeça: [Nome Exato da Peça]\n\n[1 a 2 frases objetivas com o enquadramento de cada medida e as duas opções de escolha].\n\nEXEMPLOS DE SAÍDA ESPERADA:\n\nExemplo 1 (Com divergência de medidas):\nRecomendação: G (Alternativa: M)\nPeça: Vestido Midi Cotelê\n\nA cintura enquadra-se no tamanho M e o busto no tamanho G. O tamanho G é a opção para a região do busto ficar mais solta, enquanto o M atende a uma opção mais justa.\n\nExemplo 2 (Medidas uniformes):\nRecomendação: M\nPeça: Camiseta Básica\n\n\nAs medidas informadas estão no intervalo do tamanho M da tabela de medidas.",
         "batching": {}
       },
       "id": "d8b3f7b8-c691-4b5b-8e83-48a4acdf5be1",
@@ -42,8 +42,8 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.9,
       "position": [
-        896,
-        112
+        864,
+        160
       ]
     },
     {
@@ -56,8 +56,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1.1,
       "position": [
-        752,
-        336
+        864,
+        416
       ],
       "credentials": {
         "googlePalmApi": {
@@ -69,15 +69,15 @@
     },
     {
       "parameters": {
-        "jsCode": "const meta = $('Consolida Payload').first().json.metadata;\n\nlet raw = $('IA Provador Virtual').first().json.text || \"\";\nraw = raw.replace(/```json/gi, \"\").replace(/```/g, \"\").trim();\n\nlet iaOutput;\ntry {\n  iaOutput = JSON.parse(raw);\n} catch (e) {\n  iaOutput = { erro: \"Nao foi possivel interpretar a resposta da IA\", resposta_bruta: raw };\n}\n\nconst textoResposta = iaOutput.recomendacao_consultiva;\n\nreturn {\n  json: {\n    cliente_id: meta.cliente_id,\n    sku: meta.sku,\n    timestamp: meta.timestamp,\n    tamanho_recomendado: iaOutput.tamanho_recomendado,\n    fator_confianca: iaOutput.fator_confianca,\n    recomendacao_consultiva: iaOutput.recomendacao_consultiva,\n    texto_resposta: textoResposta\n  }\n};"
+        "jsCode": "const payload = $('Consolida Payload').first().json;\nconst meta = payload.metadata;\nconst medidas = payload.medidas_cliente || {};\nconst tabela = payload.tabela_medidas || [];\n\n// Identifica as medidas corporais exigidas na tabela_medidas (ex: cintura, busto, quadril)\nconst camposNecessarios = new Set();\ntabela.forEach(row => {\n  Object.keys(row).forEach(key => {\n    if (key.endsWith('_min') || key.endsWith('_max')) {\n      camposNecessarios.add(key.replace('_min', '').replace('_max', ''));\n    }\n  });\n});\n\n// Verifica se o cliente enviou todas as medidas exigidas pela tabela\nconst camposCliente = Object.keys(medidas);\nconst todasPreenchidas = camposNecessarios.size > 0 && Array.from(camposNecessarios).every(campo => camposCliente.includes(campo));\nconst statusMedidas = todasPreenchidas ? \"Completas\" : \"Parciais\";\n\nconst textoResposta = $('IA Provador Virtual').first().json.text || \"Não foi possível gerar a recomendação.\";\n\nreturn {\n  json: {\n    cliente_id: meta.cliente_id,\n    sku: meta.sku,\n    timestamp: meta.timestamp,\n    status_medidas: statusMedidas,\n    recomendacao_consultiva: textoResposta,\n    texto_resposta: textoResposta\n  }\n};"
       },
       "id": "eb302848-14ee-4dcc-b898-1edfbdd151c6",
       "name": "Formata Resposta + Rastreio",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1248,
-        112
+        1360,
+        192
       ]
     },
     {
@@ -91,8 +91,8 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        1472,
-        112
+        1632,
+        192
       ]
     },
     {
@@ -206,8 +206,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1488,
-        256
+        1616,
+        -16
       ],
       "id": "055ea512-9b22-4319-b0f4-a1b411a72e54",
       "name": "Logs_Analytics",
@@ -256,35 +256,71 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        672,
-        112
+        384,
+        144
       ],
       "id": "319e5428-5389-4c72-a0e0-20d4f53acd14",
       "name": "If"
     },
     {
       "parameters": {
-        "jsCode": "const payload = $('Consolida Payload').first().json;\nconst meta = payload.metadata;\nconst validacao = payload.status_validacao;\n\nlet recomendacaoText = \"\";\nlet fatorConfianca = \"\";\n\nif (!validacao.sku_encontrado) {\n  recomendacaoText = \"Este produto ainda não conta com a funcionalidade de provador virtual.\";\n  fatorConfianca = \"Indisponível (SKU não cadastrado)\";\n} else if (!validacao.possui_medidas) {\n  recomendacaoText = \"Você deve informar pelo menos uma medida para utilizar o provador virtual. Quanto mais medidas você adicionar, melhor será recomendação de tamanho da peça.\";\n  fatorConfianca = \"Sem dados corporais\";\n}\n\nreturn {\n  json: {\n    cliente_id: meta.cliente_id,\n    sku: meta.sku,\n    timestamp: meta.timestamp,\n    tamanho_recomendado: \"N/A\",\n    fator_confianca: fatorConfianca,\n    recomendacao_consultiva: recomendacaoText,\n    texto_resposta: recomendacaoText\n  }\n};"
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "af777957-736b-4f23-bfd9-a8fbed67ffd3",
+              "leftValue": "={{ $json.status_validacao.eh_tamanho_unico }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        608,
+        144
+      ],
+      "id": "f09e5bbc-3aaf-41c9-aec5-05325f6071a5",
+      "name": "Tamanho Único?"
+    },
+    {
+      "parameters": {
+        "jsCode": "const payload = $('Consolida Payload').first().json;\nconst meta = payload.metadata;\nconst nomePeca = payload.detalhes_produto.nome_peca;\n\nconst texto = `Recomendação: Tamanho Único\\nPeça: ${nomePeca}\\n\\nEste produto possui tamanho único, sem necessidade de conferência de medidas.`;\n\nreturn {\n  json: {\n    cliente_id: meta.cliente_id,\n    sku: meta.sku,\n    timestamp: meta.timestamp,\n    fator_confianca: \"Tamanho único (sem necessidade de medidas)\",\n    recomendacao_consultiva: texto,\n    texto_resposta: texto\n  }\n};"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        944,
-        256
+        768,
+        -32
       ],
-      "id": "0c472138-cc96-4be7-8aa9-56de5b70d7e1",
-      "name": "Code in JavaScript"
+      "id": "a529d56a-da8d-4508-9d8e-8b5bb345b2ce",
+      "name": "Resposta direta"
     },
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
+      "parameters": {
+        "jsCode": "const payload = $('Consolida Payload').first().json;\nconst meta = payload.metadata;\nconst validacao = payload.status_validacao;\n\nlet recomendacaoText = \"\";\n\nif (!validacao.sku_encontrado) {\n  recomendacaoText = \"Este produto ainda não possui tabela de medidas cadastrada, portanto o provador virtual não está disponível para ele no momento.\";\n  fatorConfianca = \"Indisponível (sem tabela de medidas cadastrada)\";\n} else if (!validacao.possui_medidas) {\n  recomendacaoText = \"Você deve informar pelo menos uma medida para utilizar o provador virtual. Quanto mais medidas você adicionar, melhor será recomendação de tamanho da peça.\";\n}\n\nreturn {\n  json: {\n    cliente_id: meta.cliente_id,\n    sku: meta.sku,\n    timestamp: meta.timestamp,\n    tamanho_recomendado: \"N/A\",\n    recomendacao_consultiva: recomendacaoText\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
-        1104,
-        240
+        624,
+        320
       ],
-      "id": "dbf3ec94-0648-4eef-880a-e5833e48a330",
-      "name": "Sticky Note"
+      "id": "0c472138-cc96-4be7-8aa9-56de5b70d7e1",
+      "name": "Provador Indisponivel"
     }
   ],
   "pinData": {
@@ -292,36 +328,25 @@
       {
         "json": {
           "body": {
-            "customer_id": "CLI-TESTE-01",
-            "cintura": 74,
-            "busto": 92,
+            "cliente_id": "CLI-TESTE-10",
             "produto": {
-              "sku": "SKU-01001",
-              "nome_peca": "Camiseta Básica",
-              "comprimento_peca": "68cm",
+              "sku": "SKU-01010",
+              "nome_peca": "Camisa Oversized",
               "tabela_medidas": [
                 {
-                  "tamanho": "P",
-                  "cintura_min": 62,
-                  "cintura_max": 70,
-                  "busto_min": 80,
-                  "busto_max": 88
+                  "tamanho": "P"
                 },
                 {
-                  "tamanho": "M",
-                  "cintura_min": 71,
-                  "cintura_max": 78,
-                  "busto_min": 89,
-                  "busto_max": 96
+                  "tamanho": "M"
                 },
                 {
-                  "tamanho": "G",
-                  "cintura_min": 79,
-                  "cintura_max": 88,
-                  "busto_min": 97,
-                  "busto_max": 106
+                  "tamanho": "G"
                 }
               ]
+            },
+            "medidas_cliente": {
+              "cintura": 68,
+              "busto": 86
             }
           }
         }
@@ -393,21 +418,55 @@
       "main": [
         [
           {
-            "node": "IA Provador Virtual",
+            "node": "Tamanho Único?",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Code in JavaScript",
+            "node": "Provador Indisponivel",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Code in JavaScript": {
+    "Tamanho Único?": {
+      "main": [
+        [
+          {
+            "node": "Resposta direta",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IA Provador Virtual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resposta direta": {
+      "main": [
+        [
+          {
+            "node": "Resposta para Cliente",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Logs_Analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Provador Indisponivel": {
       "main": [
         [
           {
@@ -429,7 +488,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "0f488b31-33a0-4bac-86ae-13a6c17a3faf",
+  "versionId": "5b817045-a1e9-46ee-8324-b99ac24478e3",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "aeb4529fab57d00d45309aa395848d083a1c9cfa5c3a1722020870bc23d755c9"
