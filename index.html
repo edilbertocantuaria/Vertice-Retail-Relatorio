@@ -452,6 +452,30 @@
   .phase-days { font-family: var(--font-body); font-size: 11px; font-weight: 600; color: var(--muted); }
   .phase-item { font-size: 12.5px; color: var(--ink); margin-bottom: 10px; line-height: 1.5; }
   .phase-item .badge { margin-right: 6px; }
+  .phase-out { font-size: 11.5px; color: var(--muted); line-height: 1.5; margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--border); }
+  .phase-out strong { color: var(--primary-dark); }
+
+  /* Linha do tempo (Hoje / 30 / 60 / 90 dias) */
+  .rm-timeline { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); margin-bottom: 26px; }
+  .rm-timeline::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 52px; background: var(--primary-bg); border-radius: 10px; }
+  .rm-timeline::after { content: ""; position: absolute; left: 0; right: 0; top: 26px; border-top: 1.5px dashed var(--ink); opacity: .75; }
+  .rm-col { position: relative; z-index: 1; text-align: center; padding: 0 10px; }
+  .rm-dot { width: 20px; height: 20px; border-radius: 50%; background: #000; margin: 16px auto 0; }
+  .rm-stem { width: 3px; height: 24px; background: var(--primary); margin: 0 auto; }
+  .rm-label { font-family: var(--font-display); font-weight: 700; font-size: 16px; color: var(--ink); margin: 8px 0 14px; }
+  .rm-item { font-size: 13px; color: var(--ink); line-height: 1.4; margin-bottom: 12px; }
+  .rm-item.first { font-weight: 600; color: var(--primary-dark); }
+  @media (max-width: 820px) {
+    .rm-timeline { grid-template-columns: 1fr; gap: 18px; }
+    .rm-timeline::before, .rm-timeline::after { display: none; }
+    .rm-col { text-align: left; border-left: 3px solid var(--primary-light); padding-left: 16px; }
+    .rm-dot { display: none; }
+    .rm-stem { display: none; }
+    .rm-label { margin-top: 0; }
+  }
+  .next-steps { margin: 0; padding-left: 20px; }
+  .next-steps li { font-size: 13.5px; line-height: 1.6; margin-bottom: 8px; }
+  .next-steps li:last-child { margin-bottom: 0; }
 
   /* ---------- RISK CARDS (Governança) ---------- */
   .risk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
@@ -1854,100 +1878,284 @@
             e recusar corretamente uma pergunta fora de escopo em vez de
             inventar resposta (caso 8).</div>
         </div>
+        <!-- SOLUÇÃO EXTRA: PREVENÇÃO DE DEVOLUÇÕES -->
+        <div class="module-card">
+          <div class="module-header">
+            <span class="module-badge">Módulo Extra</span>
+            <span class="module-title">Redução de devolução</span>
+          </div>
+          <div class="module-flow">Entrada de Dados (Webhook)  → Consolida Payload → If (verifica se SKU existe e se há medidas)  → Tamanho Único? (desvia produtos para Resposta Direta)  → 
+            IA Provador Virtual (gera análise de tamanho via Gemini)  → Formata Resposta + Rastreio (calcula completude das medidas e estrutura payload final)  → Google Sheets (Logs_Analytics) / Resposta para Cliente (Webhook)
+          </div>
+\
+          <div class="flow-screenshot-wrap">
+            <img src="images/provador.png"
+              alt="Fluxo do MVP Provador Virtual" class="flow-screenshot">
+            <div class="flow-caption">Fluxo rodado no n8n
+              Foram usados dados fictícios de medidas das peças (devem ser construidos) e API do Gemini</div>
+          </div>
+
+          <div class="result-label">💬 7 casos de teste: 1 com resposta automática e 6 com resposta via Gemini</div>
+          <table>
+            <tr>
+    <th>Peça (SKU)</th>
+    <th>Medidas do cliente</th>
+    <th>Faixas do produto</th>
+    <th>Resposta da IA</th>
+    <th>Tokens</th>
+  </tr>
+
+  <tr>
+    <td>Camiseta Básica 92<br>(SKU-01001)</td>
+    <td>cintura 75,<br>busto 92</td>
+    <td>
+      P: cintura 62-70 / busto 80-88 / M:<br>
+      cintura 71-78 / busto 89-96 / G:<br>
+      cintura 79-88 / busto 97-106
+    </td>
+    <td>
+      Recomendação: M — Peça: Camiseta Básica. As medidas informadas estão no intervalo do tamanho M da tabela de medidas.
+    </td>
+    <td>634</td>
+  </tr>
+
+  <tr>
+    <td>Saia Plissada<br>(SKU-01005)</td>
+    <td>cintura 72</td>
+    <td>
+      P: cintura 60-68 / M: cintura 69-76 / G:<br>
+      cintura 77-85
+    </td>
+    <td>
+      Recomendação: M — Peça: Saia Plissada. As medidas informadas estão no intervalo do tamanho M da tabela de medidas.
+    </td>
+    <td>530</td>
+  </tr>
+
+  <tr>
+    <td>Calça Jeans Skinny<br>(SKU-01002)</td>
+    <td>cintura 68,<br>quadril 94</td>
+    <td>
+      36: cintura 60-66, quadril 86-92 / 38:<br>
+      cintura 67-73, quadril 93-98 / 40:<br>
+      cintura 74-80, quadril 99-105
+    </td>
+    <td>
+      Recomendação: 38 — Peça: Calça Jeans Skinny. As medidas informadas estão no intervalo do tamanho 38 da tabela de medidas.
+    </td>
+    <td>595</td>
+  </tr>
+
+  <tr>
+    <td>Top Esportivo<br>(SKU-01006)</td>
+    <td>busto 88</td>
+    <td>
+      P: busto 78-84 / M: busto 85-92 / G:<br>
+      busto 93-100
+    </td>
+    <td>
+      Recomendação: M — Peça: Top Esportivo. As medidas informadas estão no intervalo do tamanho M da tabela de medidas.
+    </td>
+    <td>499</td>
+  </tr>
+
+  <tr>
+    <td>Bermuda Moletom<br>(SKU-01007)</td>
+    <td>cintura 82,<br>quadril 108</td>
+    <td>
+      P: cintura 70-78, quadril 90-96 / M:<br>
+      cintura 79-86, quadril 97-104 / G:<br>
+      cintura 87-95, quadril 105-112
+    </td>
+    <td>
+      Recomendação: G (Alternativa: M) — cintura 82 enquadra em M, quadril enquadra em G. G proporciona caimento mais solto no quadril, M ajusta melhor a cintura.
+    </td>
+    <td>628</td>
+  </tr>
+
+  <tr>
+    <td>Jaqueta Couro Sintético<br>(SKU-01008)</td>
+    <td>busto 88</td>
+    <td>
+      P: busto 82-88 / M: busto 89-96 / G:<br>
+      busto 97-104
+    </td>
+    <td>
+      Recomendação: M — Peça: Jaqueta. P — busto enquadra em P para caimento mais justo; M é a opção mais solta.
+    </td>
+    <td>550</td>
+  </tr>
+
+  <tr>
+    <td>Boné Acessório<br>(SKU-01009)</td>
+    <td><em>(irrelevante — não medida)</em></td>
+    <td>Único (sem faixas numéricas)</td>
+    <td>
+      Recomendação: Tamanho Único — Peça: Boné Acessório. Este produto possui tamanho único, sem necessidade de conferência de medidas. (resposta direta, sem chamar a IA)
+    </td>
+    <td>0</td>
+  </tr>
+</table>
+
+          <div class="module-validation">O protótipo registrou um gasto médio de 491 tokens por chamada à API. Considerando-se saídas de 300 a 400 tokens,
+            o custo estimado é de 710 a 1100 chamadas por dólar. 
+          </div>
+          </div>
       </section>
 
       <section id="roadmap">
         <h2><span class="num-marker">7</span>Roadmap 30-60-90 dias</h2>
         <p
-          style="color:var(--muted); font-size:13.5px; margin-top:-8px;">Iniciativas
-          de captura mais longa (60-90 dias) começam já na Fase 1, já que não
-          faz
-          sentido esperar pra começar algo que já sabemos que vai levar
-          tempo.</p>
+          style="color:var(--muted); font-size:13.5px; margin-top:-8px;">Sequência
+          guiada pela matriz impacto × esforço do diagnóstico: esforço baixo
+          primeiro, estrutural depois, e nenhum módulo de IA vai a produção sem
+          antes passar por piloto em modo sombra.</p>
+
+        <div class="rm-timeline">
+          <div class="rm-col">
+            <div class="rm-dot"></div>
+            <div class="rm-stem"></div>
+            <div class="rm-label">Hoje</div>
+          </div>
+          <div class="rm-col">
+            <div class="rm-dot"></div>
+            <div class="rm-stem"></div>
+            <div class="rm-label">30 dias</div>
+            <div class="rm-item first">Fundação e quick wins</div>
+            <div class="rm-item">Data room tratado e dashboard de canais</div>
+            <div class="rm-item">Playbook de atendimento e governança</div>
+          </div>
+          <div class="rm-col">
+            <div class="rm-dot"></div>
+            <div class="rm-stem"></div>
+            <div class="rm-label">60 dias</div>
+            <div class="rm-item first">Pilotos de IA em modo sombra</div>
+            <div class="rm-item">Classificador de atendimento (Módulo B)</div>
+            <div class="rm-item">Priorização de margem e relatório (C e D)</div>
+          </div>
+          <div class="rm-col">
+            <div class="rm-dot"></div>
+            <div class="rm-stem"></div>
+            <div class="rm-label">90 dias</div>
+            <div class="rm-item first">Produção e captura de valor</div>
+            <div class="rm-item">Módulo B em produção parcial</div>
+            <div class="rm-item">Revisão de impacto e próxima onda</div>
+          </div>
+        </div>
+
         <div class="callout" style="margin-bottom:20px;">
-          <strong>Coerência com o Módulo C:</strong> a campanha de retenção
-          "Em Risco" foi antecipada pra Fase 1 porque é a 2ª maior pontuação do
-          motor de priorização (80/100, atrás só da realocação de marketing), e
-          porque o próprio Módulo D, no relatório executivo gerado, já sinalizou
-          que o atraso em iniciá-la é a principal causa do ritmo abaixo do
-          esperado. Esse ajuste é exatamente o tipo de retroalimentação que os 3
-          módulos deveriam gerar entre si.
+          <strong>Dados antes de modelo:</strong> o diagnóstico revelou um
+          artefato de geração sintética (apenas 2,3% dos 15.000 clientes
+          aparecem em Vendas). Por isso o tratamento do data room abre a Fase 1,
+          e nenhuma iniciativa que cruze o comportamento individual de pedido
+          com o perfil de Cliente entra em produção antes dele.
         </div>
 
         <div class="roadmap-grid">
           <div class="roadmap-phase">
             <div class="phase-title">Fase 1 <span class="phase-days">Dias
                 0-30</span></div>
-            <div class="phase-item"><span class="badge quickwin">Concluir</span>
-              Realocação de investimento de marketing</div>
-            <div class="phase-item"><span class="badge quickwin">Concluir</span>
-              Correção de margem do Marketplace</div>
             <div class="phase-item"><span
-                class="badge estruturante">Disparar</span> Campanha de retenção
-              "Em Risco": oferta pronta e enviada ao segmento, não só
-              desenhada</div>
+                class="badge estruturante">Estruturante</span> Consolidar e
+              tratar o data room: dicionário de dados + relatório de qualidade,
+              com o artefato sintético Vendas×Clientes documentado</div>
+            <div class="phase-item"><span class="badge quickwin">Quick
+                win</span> Módulo A: dashboard de CAC, ROAS e margem por canal e
+              1ª realocação de mídia</div>
+            <div class="phase-item"><span class="badge quickwin">Quick
+                win</span> Playbook manual de resposta para os temas mais
+              recorrentes (ex.: atraso/rastreio)</div>
             <div class="phase-item"><span
-                class="badge estruturante">Iniciar</span> Automação de
-              atendimento (piloto 1 categoria)</div>
+                class="badge estruturante">Estruturante</span> Governança
+              inicial: comitê semanal + política de acesso a dados sensíveis
+              (LGPD)</div>
+            <div class="phase-out"><strong>Saída:</strong> dashboard executivo
+              v1 em produção, 1ª decisão de realocação de mídia tomada, limites
+              de uso de dados claros e comitê ativo.</div>
           </div>
           <div class="roadmap-phase">
             <div class="phase-title">Fase 2 <span class="phase-days">Dias
                 31-60</span></div>
-            <div class="phase-item"><span class="badge estruturante">Em
-                andamento</span> Retenção "Em Risco": medir resposta e ajustar
-              oferta</div>
-            <div class="phase-item"><span class="badge estruturante">Em
-                andamento</span> Automação (expandir p/ 4 categorias)</div>
             <div class="phase-item"><span
-                class="badge estruturante">Iniciar</span> Renegociar
-              fornecedores lead time longo</div>
+                class="badge estruturante">Estruturante</span> Piloto Módulo B
+              em modo sombra: a IA classifica tema, sentimento, urgência e ação;
+              o humano decide</div>
+            <div class="phase-item"><span class="badge quickwin">Quick
+                win</span> Módulo C: ranking de iniciativas por impacto ×
+              esforço × velocidade de captura</div>
             <div class="phase-item"><span
-                class="badge estruturante">Iniciar</span> Liquidação de estoque
-              crítico</div>
+                class="badge estruturante">Estruturante</span> Piloto Módulo D:
+              memo executivo semiautomático (formato do "Status semanal")</div>
             <div class="phase-item"><span
-                class="badge estruturante">Iniciar</span> Revisar onboarding
-              (Promissor)</div>
+                class="badge estruturante">Estruturante</span> Matriz de riscos
+              de IA: viés, alucinação, dados sensíveis em tickets e dependência
+              de fornecedor</div>
+            <div class="phase-out"><strong>Saída:</strong> dois pilotos validados
+              em modo sombra (B e D), motor de priorização C institucionalizado
+              como camada fina e matriz de riscos pronta.</div>
           </div>
           <div class="roadmap-phase">
             <div class="phase-title">Fase 3 <span class="phase-days">Dias
                 61-90</span></div>
-            <div class="phase-item"><span class="badge quickwin">Concluir</span>
-              Automação: medir economia real vs projetada</div>
-            <div class="phase-item"><span class="badge quickwin">Concluir</span>
-              Retenção: medir receita protegida real</div>
-            <div class="phase-item"><span class="badge quickwin">Concluir</span>
-              Liquidação de estoque (20% planejado)</div>
-            <div class="phase-item"><span class="badge quickwin">Concluir</span>
-              Fechar renegociação de fornecedores</div>
-            <div class="phase-item"><span class="badge quickwin">Concluir</span>
-              Implementar ajustes de onboarding</div>
+            <div class="phase-item"><span
+                class="badge estruturante">Estruturante</span> Módulo B em
+              produção parcial: triagem automática nas categorias já validadas
+              (ex.: rastreio, troca)</div>
+            <div class="phase-item"><span class="badge quickwin">Quick
+                win</span> Módulo C no ciclo mensal de decisão de investimento
+            </div>
+            <div class="phase-item"><span
+                class="badge estruturante">Estruturante</span> Módulo D
+              consolidado: relatório semanal 100% automatizado</div>
+            <div class="phase-item"><span
+                class="badge estruturante">Estruturante</span> Revisão de impacto
+              e roadmap da próxima onda (ex.: segmentação de clientes,
+              churn)</div>
+            <div class="phase-out"><strong>Saída:</strong> Módulo B gerando
+              economia real e mensurável, Módulo C na rotina de decisão,
+              relatório executivo automatizado e recomendação clara sobre a
+              próxima onda.</div>
           </div>
         </div>
 
         <table style="margin-top:20px;">
           <tr><th>Iniciativa</th><th>Responsável</th><th>Dependência</th><th>KPI
-              de acompanhamento</th></tr>
-          <tr><td>Correção de margem
-              Marketplace</td><td>Comercial/Parcerias</td><td>Nenhuma</td><td>Margem
-              % do canal</td></tr>
-          <tr><td>Realocação de
-              marketing</td><td>Marketing</td><td>Nenhuma</td><td>ROAS por
-              canal</td></tr>
-          <tr><td>Automação de atendimento</td><td>Squad Dados/IA +
-              Atendimento</td><td>Validação da base de conhecimento</td><td>%
-              automatizado, custo/ticket</td></tr>
-          <tr><td>Retenção "Em Risco"</td><td>CRM/Retenção</td><td>Orçamento de
-              cupom aprovado</td><td>Taxa de reativação</td></tr>
-          <tr><td>Renegociar fornecedores</td><td>Operações/Supply
-              Chain</td><td>Lista de fornecedores críticos</td><td>Lead time
-              médio</td></tr>
-          <tr><td>Liquidação de estoque</td><td>Comercial +
-              Marketing</td><td>Margem mínima definida</td><td>% de estoque
-              crítico liquidado</td></tr>
-          <tr><td>Revisar
-              onboarding</td><td>CX/Produto</td><td>Nenhuma</td><td>Tickets por
-              cliente novo</td></tr>
+              de acompanhamento</th><th>Impacto estimado</th></tr>
+          <tr><td><span class="badge estruturante" style="margin-right:6px;">F1</span>Consolidar e tratar o data room</td><td>Squad de Dados (patrocínio COO)</td><td>Acesso às 5 bases (Vendas, Marketing, Clientes, Atendimento, Estoque)</td><td>100% das bases com regras de qualidade e limites de uso documentados</td><td>Evita decisões e modelos apoiados em cruzamento de dados não confiável</td></tr>
+          <tr><td><span class="badge estruturante" style="margin-right:6px;">F1</span>Módulo A: funil e eficiência de canais</td><td>Squad Analytics + CMO</td><td>Marketing e Vendas tratados</td><td>Dashboard em produção; 1ª realocação de mídia aprovada</td><td>Direcional: ROAS 2,91x → 7,63x no valor realocado</td></tr>
+          <tr><td><span class="badge estruturante" style="margin-right:6px;">F1</span>Quick win de atendimento (manual)</td><td>Squad de Atendimento (COO)</td><td>Nenhuma, não depende de IA</td><td>Redução do tempo médio de resposta nos temas recorrentes</td><td>Ganho de produtividade imediato</td></tr>
+          <tr><td><span class="badge estruturante" style="margin-right:6px;">F1</span>Governança inicial</td><td>Sponsor executivo (CEO)</td><td>Nenhuma</td><td>Comitê formado e 1ª reunião realizada</td><td>Alinhamento da diretoria antes de investir nos pilotos</td></tr>
+          <tr><td><span class="badge estruturante" style="margin-right:6px;">F2</span>Piloto Módulo B: classificador de atendimento (RAG)</td><td>Squad de IA + Atendimento</td><td>Base de Atendimento tratada e amostra rotulada</td><td>Acurácia de classificação; % de tickets endereçáveis por automação</td><td>Base de sustentação de R$251-358 mil/ano projetados</td></tr>
+          <tr><td><span class="badge estruturante" style="margin-right:6px;">F2</span>Módulo C: motor de priorização de margem</td><td>Squad Analytics + CFO</td><td>Saídas de A e dados de margem tratados na Fase 1</td><td>1º ciclo de priorização usado pela diretoria</td><td>Organiza R$2,6-4,7 Mi/ano + R$8,65 Mi de capital</td></tr>
+          <tr><td><span class="badge estruturante" style="margin-right:6px;">F2</span>Piloto Módulo D: gerador de relatório semanal</td><td>Squad de IA + Gestão</td><td>KPIs consolidados na Fase 1</td><td>Tempo de produção do relatório reduzido</td><td>Ganho de produtividade (não quantificado em R$)</td></tr>
+          <tr><td><span class="badge estruturante" style="margin-right:6px;">F2</span>Matriz de riscos de IA</td><td>Squad de IA + Jurídico/Compliance</td><td>Piloto B rodando</td><td>Matriz revisada e aprovada pelo comitê</td><td>Insumo direto para Governança e Riscos</td></tr>
+          <tr><td><span class="badge estruturante" style="margin-right:6px;">F3</span>Módulo B em produção parcial</td><td>Squad de IA + Atendimento (COO)</td><td>Piloto validado com acurácia mínima aprovada pelo comitê</td><td>Economia mensal rastreada vs. projeção</td><td>R$251-358 mil/ano em economia de atendimento</td></tr>
+          <tr><td><span class="badge estruturante" style="margin-right:6px;">F3</span>Módulo C institucionalizado</td><td>CFO / comitê executivo</td><td>Módulo C validado na Fase 2</td><td>% de decisões apoiadas pelo ranking</td><td>Captura organizada de R$2,6-4,7 Mi/ano + R$8,65 Mi de capital</td></tr>
+          <tr><td><span class="badge estruturante" style="margin-right:6px;">F3</span>Módulo D consolidado</td><td>Gestão</td><td>Piloto D validado</td><td>Horas/mês economizadas pela equipe</td><td>Redução de retrabalho informacional</td></tr>
+          <tr><td><span class="badge estruturante" style="margin-right:6px;">F3</span>Revisão de impacto e próxima onda</td><td>CEO / diretoria</td><td>Resultados reais dos 90 dias vs. projetado</td><td>Aprovação de orçamento para a fase seguinte</td><td>Base para decisão de continuidade do investimento</td></tr>
         </table>
+
+        <h3
+          style="font-family: var(--font-display); font-weight: 700; font-size:17px; color:var(--primary-dark); margin-top:28px;">Próximos
+          passos</h3>
+        <div class="card">
+          <ol class="next-steps">
+            <li><strong>Início da Fase 1:</strong> o Squad de Dados abre as 5
+              bases e documenta o artefato sintético Vendas×Clientes, enquanto o
+              CEO forma o comitê semanal e define a política de acesso a dados
+              sensíveis (LGPD).</li>
+            <li><strong>Ainda na Fase 1:</strong> Analytics e CMO colocam o
+              dashboard de canais em produção e aprovam a 1ª realocação de mídia;
+              Atendimento publica o playbook manual, sem depender de IA.</li>
+            <li><strong>Dias 31-60:</strong> toda automação entra primeiro em
+              modo sombra (a IA sugere, o humano decide), e a matriz de riscos de
+              IA é revisada e aprovada pelo comitê.</li>
+            <li><strong>Dia 90:</strong> a diretoria compara resultado real vs.
+              projetado e decide o orçamento da próxima onda (segmentação de
+              clientes, churn), condicionada à correção do artefato sintético
+              Vendas×Clientes.</li>
+          </ol>
+        </div>
       </section>
 
       <section id="governanca">
@@ -2127,6 +2335,39 @@
               fechado; a primeira ação de qualquer iniciativa aprovada deve ser
               reproduzir o cálculo com dado real antes de comprometer verba.</p>
           </div>
+           <div class="risk-card">
+            <div class="risk-title"
+              style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;"><span>📊
+                Aumento de custos por bugs ou bots</span><span
+                class="badge parcial" style="flex-shrink:0;">Financeiro ·
+                Alto</span></div>
+            <p class="risk-text"><strong>Risco:</strong> disparos excessivos acidentais do n8n ou ataques maliciosos (bots) no Webhook de entrada, gerando consumo descontrolado de tokens na API do Gemini.</p>
+            <p class="risk-text"><strong>Mitigação:</strong> implementar rate-limiting no nó Webhook de entrada, definir limites orçamentais para Google Cloud e alertas de pico atípico no n8n.</p>
+          </div>
+          <div class="risk-card">
+  <div class="risk-title"
+    style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;"><span>📏
+    Recomendação incorreta de tamanho</span><span
+    class="badge parcial" style="flex-shrink:0;">Produto · Médio</span></div>
+  <p class="risk-text"><strong>Risco:</strong> o provador recomendar um tamanho
+    inadequado devido a medidas incompletas, inconsistentes ou a uma tabela de
+    medidas incorreta.</p>
+  <p class="risk-text"><strong>Mitigação:</strong> validar as tabelas de medidas
+    dos produtos, testar recomendações com casos reais e monitorar a taxa de
+    acerto da recomendação e de devolução após o uso do provador, garantindo melhoria contínua da funcionalidade.</p>
+</div>
+<div class="risk-card">
+  <div class="risk-title"
+    style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;"><span>🔄
+    Mudança de modelo sem validação</span><span
+    class="badge parcial" style="flex-shrink:0;">Técnico · Baixo</span></div>
+  <p class="risk-text"><strong>Risco:</strong> o fornecedor atualizar o modelo
+    utilizado pela API e alterar o comportamento da solução sem que a empresa
+    tenha realizado novos testes.</p>
+  <p class="risk-text"><strong>Mitigação:</strong> registrar a versão do modelo
+    utilizada e executar novos testes antes de aceitar uma nova versão
+    em produção.</p>
+</div>
         </div>
       </section>
 
@@ -2220,17 +2461,34 @@
               diagnóstico mais certeiro do que eu teria feito sozinho, no mesmo
               tempo.</p>
           </div>
-          <div class="lesson-personal-card">
-            <div class="lesson-personal-name">[Nome 2]</div>
-            <div class="lesson-personal-role">[Frente do case]</div>
-            <p class="lesson-personal-text">[A preencher: principal aprendizado
-              pessoal do projeto]</p>
+          <div class="lesson-personal-card"
+            style="border-style: solid; border-left: 4px solid var(--primary-light);">
+            <div class="lesson-personal-name">Yuri Espindola de Souza</div>
+            <div class="lesson-personal-role">Roadmap, Next Steps &amp;
+              Apresentação Final</div>
+            <p class="lesson-personal-text" style="font-style: normal;">Tive
+              uma experiência muito positiva ao ter um contato tão próximo com
+              um grande problema real. Tivemos que analisar muitos dados, e
+              várias hipóteses que pareciam totalmente corretas se mostraram
+              infundadas: o grande problema veio de onde não era óbvio. Foi
+              muito prazeroso descobrir esses erros e percorrer toda a jornada
+              de elaborar esta proposta, do diagnóstico ao plano final, com
+              muito aprendizado pelo caminho. Gostei também de como o uso da IA
+              foi assertivo: ela facilitou o trabalho sem que perdêssemos a
+              originalidade e a confiabilidade que queríamos para o
+              projeto.</p>
           </div>
           <div class="lesson-personal-card">
-            <div class="lesson-personal-name">[Nome 3]</div>
-            <div class="lesson-personal-role">[Frente do case]</div>
-            <p class="lesson-personal-text">[A preencher: principal aprendizado
-              pessoal do projeto]</p>
+            <div class="lesson-personal-name">[Alice Fernandes Lima]</div>
+            <div class="lesson-personal-role">[Protótipo de IA, riscos]</div>
+            <p class="lesson-personal-text">[Durante o bootcamp, desenvolvi uma visão mais 
+            ampla sobre análise de dados, percebendo como diferentes fatores se relacionam e 
+            contribuem para as mudanças observadas. Também passei a enxergar com mais clareza 
+            como a IA pode ser aplicada à automação de processos a partir das necessidades de 
+            um business case, desde a identificação da oportunidade até a criação de um protótipo 
+            de automação. Além disso, o contato com essas tecnologias me ensinou a ser mais produtiva 
+            na realização das tarefas e trouxe uma reflexão maior sobre seus riscos e limites, assim 
+            como sobre novas oportunidades de aplicação da tecnologia para solucionar problemas e gerar valor.]</p>
           </div>
         </div>
       </section>
