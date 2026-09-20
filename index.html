@@ -636,7 +636,9 @@
             <div class="team-name">Alice Fernandes Lima</div>
             <div class="team-role">Integrante do time</div>
             <div class="team-contact">
-              <a
+                <a href="https://wa.me/5531984727133" target="_blank"
+                rel="noopener">WhatsApp ↗</a>
+                <a
                 href="https://www.linkedin.com/in/alice-fernandes-lima-8402a92b6/"
                 target="_blank" rel="noopener">LinkedIn ↗</a>
             </div>
@@ -1878,6 +1880,129 @@
             e recusar corretamente uma pergunta fora de escopo em vez de
             inventar resposta (caso 8).</div>
         </div>
+        <!-- SOLUÇÃO EXTRA: PREVENÇÃO DE DEVOLUÇÕES -->
+        <div class="module-card">
+          <div class="module-header">
+            <span class="module-badge">Módulo Extra</span>
+            <span class="module-title">Redução de devolução</span>
+          </div>
+          <div class="module-flow">Entrada de Dados (Webhook)  → Consolida Payload → If (verifica se SKU existe e se há medidas)  → Tamanho Único? (desvia produtos para Resposta Direta)  → 
+            IA Provador Virtual (gera análise de tamanho via Gemini)  → Formata Resposta + Rastreio (calcula completude das medidas e estrutura payload final)  → Google Sheets (Logs_Analytics) / Resposta para Cliente (Webhook)
+          </div>
+\
+          <div class="flow-screenshot-wrap">
+            <img src="images/provador.png"
+              alt="Fluxo do MVP Provador Virtual" class="flow-screenshot">
+            <div class="flow-caption">Fluxo rodado no n8n
+              Foram usados dados fictícios de medidas das peças (devem ser construidos) e API do Gemini</div>
+          </div>
+
+          <div class="result-label">💬 7 casos de teste: 1 com resposta automática e 6 com resposta via Gemini</div>
+          <table>
+            <tr>
+    <th>Peça (SKU)</th>
+    <th>Medidas do cliente</th>
+    <th>Faixas do produto</th>
+    <th>Resposta da IA</th>
+    <th>Tokens</th>
+  </tr>
+
+  <tr>
+    <td>Camiseta Básica 92<br>(SKU-01001)</td>
+    <td>cintura 75,<br>busto 92</td>
+    <td>
+      P: cintura 62-70 / busto 80-88 / M:<br>
+      cintura 71-78 / busto 89-96 / G:<br>
+      cintura 79-88 / busto 97-106
+    </td>
+    <td>
+      Recomendação: M — Peça: Camiseta Básica. As medidas informadas estão no intervalo do tamanho M da tabela de medidas.
+    </td>
+    <td>634</td>
+  </tr>
+
+  <tr>
+    <td>Saia Plissada<br>(SKU-01005)</td>
+    <td>cintura 72</td>
+    <td>
+      P: cintura 60-68 / M: cintura 69-76 / G:<br>
+      cintura 77-85
+    </td>
+    <td>
+      Recomendação: M — Peça: Saia Plissada. As medidas informadas estão no intervalo do tamanho M da tabela de medidas.
+    </td>
+    <td>530</td>
+  </tr>
+
+  <tr>
+    <td>Calça Jeans Skinny<br>(SKU-01002)</td>
+    <td>cintura 68,<br>quadril 94</td>
+    <td>
+      36: cintura 60-66, quadril 86-92 / 38:<br>
+      cintura 67-73, quadril 93-98 / 40:<br>
+      cintura 74-80, quadril 99-105
+    </td>
+    <td>
+      Recomendação: 38 — Peça: Calça Jeans Skinny. As medidas informadas estão no intervalo do tamanho 38 da tabela de medidas.
+    </td>
+    <td>595</td>
+  </tr>
+
+  <tr>
+    <td>Top Esportivo<br>(SKU-01006)</td>
+    <td>busto 88</td>
+    <td>
+      P: busto 78-84 / M: busto 85-92 / G:<br>
+      busto 93-100
+    </td>
+    <td>
+      Recomendação: M — Peça: Top Esportivo. As medidas informadas estão no intervalo do tamanho M da tabela de medidas.
+    </td>
+    <td>499</td>
+  </tr>
+
+  <tr>
+    <td>Bermuda Moletom<br>(SKU-01007)</td>
+    <td>cintura 82,<br>quadril 108</td>
+    <td>
+      P: cintura 70-78, quadril 90-96 / M:<br>
+      cintura 79-86, quadril 97-104 / G:<br>
+      cintura 87-95, quadril 105-112
+    </td>
+    <td>
+      Recomendação: G (Alternativa: M) — cintura 82 enquadra em M, quadril enquadra em G. G proporciona caimento mais solto no quadril, M ajusta melhor a cintura.
+    </td>
+    <td>628</td>
+  </tr>
+
+  <tr>
+    <td>Jaqueta Couro Sintético<br>(SKU-01008)</td>
+    <td>busto 88</td>
+    <td>
+      P: busto 82-88 / M: busto 89-96 / G:<br>
+      busto 97-104
+    </td>
+    <td>
+      Recomendação: M — Peça: Jaqueta. P — busto enquadra em P para caimento mais justo; M é a opção mais solta.
+    </td>
+    <td>550</td>
+  </tr>
+
+  <tr>
+    <td>Boné Acessório<br>(SKU-01009)</td>
+    <td><em>(irrelevante — não medida)</em></td>
+    <td>Único (sem faixas numéricas)</td>
+    <td>
+      Recomendação: Tamanho Único — Peça: Boné Acessório. Este produto possui tamanho único, sem necessidade de conferência de medidas. (resposta direta, sem chamar a IA)
+    </td>
+    <td>0</td>
+  </tr>
+</table>
+
+          <div class="module-validation">O protótipo registrou um gasto médio de 491 tokens por chamada à API. Considerando-se saídas de 300 a 400 tokens,
+            o custo estimado é de 710 a 1100 chamadas por dólar. 
+          </div>
+          </div>
       </section>
 
       <section id="roadmap">
@@ -2212,6 +2337,39 @@
               fechado; a primeira ação de qualquer iniciativa aprovada deve ser
               reproduzir o cálculo com dado real antes de comprometer verba.</p>
           </div>
+           <div class="risk-card">
+            <div class="risk-title"
+              style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;"><span>📊
+                Aumento de custos por bugs ou bots</span><span
+                class="badge parcial" style="flex-shrink:0;">Financeiro ·
+                Alto</span></div>
+            <p class="risk-text"><strong>Risco:</strong> disparos excessivos acidentais do n8n ou ataques maliciosos (bots) no Webhook de entrada, gerando consumo descontrolado de tokens na API do Gemini.</p>
+            <p class="risk-text"><strong>Mitigação:</strong> implementar rate-limiting no nó Webhook de entrada, definir limites orçamentais para Google Cloud e alertas de pico atípico no n8n.</p>
+          </div>
+          <div class="risk-card">
+  <div class="risk-title"
+    style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;"><span>📏
+    Recomendação incorreta de tamanho</span><span
+    class="badge parcial" style="flex-shrink:0;">Produto · Médio</span></div>
+  <p class="risk-text"><strong>Risco:</strong> o provador recomendar um tamanho
+    inadequado devido a medidas incompletas, inconsistentes ou a uma tabela de
+    medidas incorreta.</p>
+  <p class="risk-text"><strong>Mitigação:</strong> validar as tabelas de medidas
+    dos produtos, testar recomendações com casos reais e monitorar a taxa de
+    acerto da recomendação e de devolução após o uso do provador, garantindo melhoria contínua da funcionalidade.</p>
+</div>
+<div class="risk-card">
+  <div class="risk-title"
+    style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px;"><span>🔄
+    Mudança de modelo sem validação</span><span
+    class="badge parcial" style="flex-shrink:0;">Técnico · Baixo</span></div>
+  <p class="risk-text"><strong>Risco:</strong> o fornecedor atualizar o modelo
+    utilizado pela API e alterar o comportamento da solução sem que a empresa
+    tenha realizado novos testes.</p>
+  <p class="risk-text"><strong>Mitigação:</strong> registrar a versão do modelo
+    utilizada e executar novos testes antes de aceitar uma nova versão
+    em produção.</p>
+</div>
         </div>
       </section>
 
@@ -2323,10 +2481,16 @@
               projeto.</p>
           </div>
           <div class="lesson-personal-card">
-            <div class="lesson-personal-name">[Nome 3]</div>
-            <div class="lesson-personal-role">[Frente do case]</div>
-            <p class="lesson-personal-text">[A preencher: principal aprendizado
-              pessoal do projeto]</p>
+            <div class="lesson-personal-name">Alice Fernandes Lima</div>
+            <div class="lesson-personal-role">Protótipo de IA, riscos</div>
+            <p class="lesson-personal-text">Durante o bootcamp, desenvolvi uma visão mais 
+            ampla sobre análise de dados, percebendo como diferentes fatores se relacionam e 
+            contribuem para as mudanças observadas. Também passei a enxergar com mais clareza 
+            como a IA pode ser aplicada à automação de processos a partir das necessidades de 
+            um business case, desde a identificação da oportunidade até a criação de um protótipo 
+            de automação. Além disso, o contato com essas tecnologias me ensinou a ser mais produtiva 
+            na realização das tarefas e trouxe uma reflexão maior sobre seus riscos e limites, assim 
+            como sobre novas oportunidades de aplicação da tecnologia para solucionar problemas e gerar valor.</p>
           </div>
         </div>
       </section>
